@@ -1,0 +1,39 @@
+{
+  "slug": "2026-03-28-week-in-tech",
+  "title": "Week in Tech: AI Agents Go Mainstream",
+  "date": "2026-03-28",
+  "summary": "AI agents hit enterprise, Apple shakes up the dev ecosystem, and crypto regulation gets real.",
+  "stories": [
+    {
+      "title": "AI Agents Are Now Enterprise-Ready",
+      "source": "TechCrunch",
+      "url": "https://example.com",
+      "take": "This is the year agents go from demo to deployment. The tooling finally caught up — expect every SaaS company to ship an agent feature by Q3."
+    },
+    {
+      "title": "Apple Opens Up Sideloading in iOS 20",
+      "source": "The Verge",
+      "url": "https://example.com",
+      "take": "Huge for indie developers. The 30% tax era is ending, slowly. If you're building mobile, this changes your distribution strategy."
+    },
+    {
+      "title": "SEC Proposes Clear Crypto Framework",
+      "source": "Bloomberg",
+      "url": "https://example.com",
+      "take": "Finally, some regulatory clarity. This is bullish for builders in the space — uncertainty was the real killer, not regulation itself."
+    },
+    {
+      "title": "Vercel Ships Edge-First Database Layer",
+      "source": "Vercel Blog",
+      "url": "https://example.com",
+      "take": "The full-stack JS ecosystem keeps eating. If you're still debating your backend stack, the answer is increasingly 'just use Vercel.'"
+    },
+    {
+      "title": "Remote Work Debate Reignites at Big Tech",
+      "source": "WSJ",
+      "url": "https://example.com",
+      "take": "The RTO push is about real estate leases and middle management, not productivity. The data is clear — let builders build from wherever."
+    }
+  ],
+  "content": "Welcome to this week's roundup. Five stories that caught my attention, with my unfiltered take on each."
+}
