@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts, getPost } from "@/lib/blog";
 import Link from "next/link";
 import { ReadingProgress } from "@/components/reading-progress";
+import { Subscribe } from "@/components/subscribe";
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -102,8 +103,10 @@ export default async function BlogPostPage({
           </div>
         </section>
 
+        <Subscribe />
+
         {/* Footer */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-12">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-12">
           <div className="font-mono text-[13px] text-text-dim">
             jarrett<span className="text-accent">.</span>love — It&apos;s All
             Love

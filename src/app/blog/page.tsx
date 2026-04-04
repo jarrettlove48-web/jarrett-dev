@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
+import { Subscribe } from "@/components/subscribe";
 
 export default function BlogPage() {
   const posts = getAllPosts();
@@ -44,6 +45,8 @@ export default function BlogPage() {
           ))}
         </div>
       )}
+
+      <Subscribe />
     </div>
   );
 }
