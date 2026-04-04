@@ -41,15 +41,29 @@ export async function POST(req: Request) {
       const token = Buffer.from(normalizedEmail).toString("base64url");
       const unsubscribeUrl = `https://jarrett.love/api/unsubscribe?token=${token}`;
 
-      await resend.emails.send({
-        from: "Jarrett Love <hello@jarrett.love>",
-        to: normalizedEmail,
-        subject: "Welcome to It's All Love Weekly",
-        html: renderWelcomeEmail(unsubscribeUrl),
-        headers: {
-          "List-Unsubscribe": `<${unsubscribeUrl}>`,
-        },
-      });
+      await Promise.all([
+        // Welcome email to subscriber
+        resend.emails.send({
+          from: "Jarrett Love <hello@jarrett.love>",
+          to: normalizedEmail,
+          subject: "Welcome to It's All Love Weekly",
+          html: renderWelcomeEmail(unsubscribeUrl),
+          headers: {
+            "List-Unsubscribe": `<${unsubscribeUrl}>`,
+          },
+        }),
+        // Alert to Jarrett
+        resend.emails.send({
+          from: "jarrett.love <hello@jarrett.love>",
+          to: "hello@jarrett.love",
+          subject: `New subscriber: ${normalizedEmail}`,
+          html: `<div style="font-family:-apple-system,sans-serif;background:#0a0a0a;color:#fafafa;padding:32px;">
+            <p style="font-size:13px;color:#525252;font-family:'JetBrains Mono',monospace;margin:0 0 16px 0;">jarrett<span style="color:#3b82f6;">.</span>love</p>
+            <h2 style="margin:0 0 8px 0;font-size:20px;">New subscriber</h2>
+            <p style="margin:0;font-size:16px;color:#a3a3a3;">${normalizedEmail}</p>
+          </div>`,
+        }),
+      ]);
     }
 
     return NextResponse.json({ message: "You're in. Welcome to It's All Love Weekly." });
