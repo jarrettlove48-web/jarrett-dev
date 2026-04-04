@@ -4,6 +4,8 @@ import path from "path";
 export interface Story {
   tag: string;
   title: string;
+  url?: string;
+  source?: string;
   body: string[];
   take: string;
 }

@@ -36,7 +36,12 @@ export function renderEmail(post: BlogPost, unsubscribeUrl: string): string {
                   </tr>
                 </table>
               </td>
-            </tr>
+            </tr>${story.url ? `
+            <tr>
+              <td style="padding-top: 12px;">
+                <a href="${story.url}" style="display: inline-block; font-size: 13px; color: #3b82f6; text-decoration: none; font-weight: 500;">Read source${story.source ? ` — ${story.source}` : ""} &rarr;</a>
+              </td>
+            </tr>` : ""}
           </table>
         </td>
       </tr>`

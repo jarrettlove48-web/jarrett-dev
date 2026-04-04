@@ -97,6 +97,16 @@ export default async function BlogPostPage({
                       {story.take}
                     </p>
                   </div>
+                  {story.url && (
+                    <a
+                      href={story.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block text-sm font-medium text-accent hover:text-accent-hover"
+                    >
+                      Read source{story.source ? ` — ${story.source}` : ""} &rarr;
+                    </a>
+                  )}
                 </div>
               </article>
             ))}

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { renderWelcomeEmail } from "@/lib/welcome-email";
 
 const SUPABASE_URL = "https://tfshawyalkvxmryjqbzh.supabase.co";
 const SUPABASE_ANON_KEY =
@@ -12,6 +14,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Valid email required" }, { status: 400 });
     }
 
+    const normalizedEmail = email.toLowerCase();
+
     const res = await fetch(`${SUPABASE_URL}/rest/v1/subscribers`, {
       method: "POST",
       headers: {
@@ -20,19 +24,32 @@ export async function POST(req: Request) {
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         Prefer: "return=minimal",
       },
-      body: JSON.stringify({ email: email.toLowerCase() }),
+      body: JSON.stringify({ email: normalizedEmail }),
     });
-
-    if (res.status === 409 || res.status === 409) {
-      return NextResponse.json({ message: "You're already subscribed!" });
-    }
 
     if (!res.ok) {
       const body = await res.text();
-      if (body.includes("duplicate")) {
+      if (body.includes("duplicate") || res.status === 409) {
         return NextResponse.json({ message: "You're already subscribed!" });
       }
       return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    }
+
+    // Send welcome email
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const token = Buffer.from(normalizedEmail).toString("base64url");
+      const unsubscribeUrl = `https://jarrett.love/api/unsubscribe?token=${token}`;
+
+      await resend.emails.send({
+        from: "Jarrett Love <hello@jarrett.love>",
+        to: normalizedEmail,
+        subject: "Welcome to It's All Love Weekly",
+        html: renderWelcomeEmail(unsubscribeUrl),
+        headers: {
+          "List-Unsubscribe": `<${unsubscribeUrl}>`,
+        },
+      });
     }
 
     return NextResponse.json({ message: "You're in. Welcome to It's All Love Weekly." });
