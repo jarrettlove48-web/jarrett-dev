@@ -18,9 +18,8 @@ export default function Home() {
           <span className="text-accent">Shipping what matters.</span>
         </h1>
         <p className="max-w-2xl text-lg leading-relaxed text-text-secondary">
-          Salesforce background. Now I build my own products. PropTrack is the
-          focus — everything else funds the vision. I write a weekly breakdown
-          of the tech stories that actually matter.
+          I build things and pay attention. Weekly notes on tech, markets,
+          and what&apos;s actually happening.
         </p>
         <div className="flex gap-4">
           <Link
