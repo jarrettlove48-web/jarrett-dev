@@ -50,7 +50,7 @@ export default function Home() {
             },
             {
               title: "Indie Products",
-              desc: "Founder of PropTrack, TheStrat, and more on the way.",
+              desc: "Founder of PropTrack. Building tools that solve real problems.",
             },
             {
               title: "Weekly Insights",
