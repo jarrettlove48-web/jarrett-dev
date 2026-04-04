@@ -1,39 +1,57 @@
 {
-  "slug": "2026-03-28-week-in-tech",
-  "title": "Week in Tech: AI Agents Go Mainstream",
-  "date": "2026-03-28",
-  "summary": "AI agents hit enterprise, Apple shakes up the dev ecosystem, and crypto regulation gets real.",
+  "slug": "2026-04-03-week-01",
+  "issue": 1,
+  "title": "Humans went back to the moon.\nAI models are now free.\nBitcoin is being given away.",
+  "date": "2026-04-03",
+  "summary": "Five stories from this week that actually matter — with my take on what they mean for builders, investors, and anyone paying attention.",
+  "intro": "Every week I pull 5 stories from the noise and tell you what I actually think. No hype, no filler. Just signal — from a builder's perspective. This week was genuinely one of the most interesting in a while. Space, AI, and Bitcoin all had real moments. Let's get into it.",
   "stories": [
     {
-      "title": "AI Agents Are Now Enterprise-Ready",
-      "source": "TechCrunch",
-      "url": "https://example.com",
-      "take": "This is the year agents go from demo to deployment. The tooling finally caught up — expect every SaaS company to ship an agent feature by Q3."
+      "tag": "Space",
+      "title": "Humans left Earth orbit for the first time in 53 years",
+      "body": [
+        "NASA's Artemis II launched on April 1, 2026. Four astronauts — Reid Wiseman, Victor Glover, Christina Koch, and Jeremy Hansen — are currently circling the moon on a 10-day mission. This is the first time humans have left low Earth orbit since Apollo 17 in December 1972.",
+        "Not a simulation. Not a test. Humans are literally on their way around the moon right now as you read this. Koch is the first woman, Glover the first Black person, and Hansen the first non-American to travel beyond Earth orbit.",
+        "Meanwhile, SpaceX reportedly filed confidentially for an IPO targeting a $1.75 trillion valuation. The space economy went from concept to very concrete this week."
+      ],
+      "take": "Artemis II + a SpaceX IPO filing in the same week is not a coincidence. The space economy is attracting capital at scale. Watch LUNR and RKLB. When SpaceX eventually goes public, it will be the largest IPO ever — and the downstream chip and satellite plays will run before that happens."
     },
     {
-      "title": "Apple Opens Up Sideloading in iOS 20",
-      "source": "The Verge",
-      "url": "https://example.com",
-      "take": "Huge for indie developers. The 30% tax era is ending, slowly. If you're building mobile, this changes your distribution strategy."
+      "tag": "AI",
+      "title": "Google dropped Gemma 4 — the best open model yet, free to run locally",
+      "body": [
+        "Google DeepMind released Gemma 4 this week. Four model sizes from 2B to 31B. The 26B A4B variant uses a Mixture-of-Experts architecture that runs at near 4B speed while delivering 26B quality — meaning it fits on a laptop with 16GB RAM.",
+        "Multimodal out of the box. 256K context window. Native function calling for agentic workflows. The benchmarks put it ahead of everything in its class.",
+        "I set up the Gemma 3 4B variant locally this week and it's already running on my MacBook Air, routing tasks automatically alongside Claude. No API keys, no internet, no cost."
+      ],
+      "take": "The gap between open and closed models is closing faster than anyone expected. A year ago running a capable AI locally felt like a developer experiment. Today it's a legitimate productivity setup. Every founder should have a local model running — the privacy and cost advantages are real."
     },
     {
-      "title": "SEC Proposes Clear Crypto Framework",
-      "source": "Bloomberg",
-      "url": "https://example.com",
-      "take": "Finally, some regulatory clarity. This is bullish for builders in the space — uncertainty was the real killer, not regulation itself."
+      "tag": "AI",
+      "title": "Microsoft is building its own AI stack — no longer just reselling OpenAI",
+      "body": [
+        "Microsoft AI released three new foundational models this week capable of generating text, voice, and images. This is a direct shot at OpenAI, Google, and Anthropic — from a company that also happens to be OpenAI's biggest backer.",
+        "The signal here isn't the models themselves. It's that Microsoft is hedging. They're building their own stack because they can't afford to be dependent on any single provider — including the one they invested billions into."
+      ],
+      "take": "When the biggest enterprise cloud provider starts competing with its own AI partner, pricing pressure across the board is inevitable. Azure customers will benefit first. For builders, this means API costs are going down over the next 18 months. Build now, the economics will only improve."
     },
     {
-      "title": "Vercel Ships Edge-First Database Layer",
-      "source": "Vercel Blog",
-      "url": "https://example.com",
-      "take": "The full-stack JS ecosystem keeps eating. If you're still debating your backend stack, the answer is increasingly 'just use Vercel.'"
+      "tag": "Bitcoin",
+      "title": "Jack Dorsey is giving away free Bitcoin on April 6",
+      "body": [
+        "Dorsey's Block announced the return of the Bitcoin faucet — launching April 6 at btc.day. The original faucet, created in 2010 by Gavin Andresen, gave away 5 full BTC per visitor to promote adoption. Those coins are worth over $330,000 today.",
+        "Nobody expects 5 BTC giveaways in 2026. But the move is deliberate — Block already auto-enabled Bitcoin payments for millions of Square merchants this week with zero processing fees. This is an ecosystem play: faucet onboards new users, Bitkey captures their self-custody, Square captures their spending."
+      ],
+      "take": "Dorsey is building Bitcoin as infrastructure, not an investment thesis. Free sats to onboard, a hardware wallet to hold, Square to spend. That's a full stack. If even 1% of Square's merchant base starts accepting BTC, the Lightning Network usage numbers are going to look very different by end of year."
     },
     {
-      "title": "Remote Work Debate Reignites at Big Tech",
-      "source": "WSJ",
-      "url": "https://example.com",
-      "take": "The RTO push is about real estate leases and middle management, not productivity. The data is clear — let builders build from wherever."
+      "tag": "Space Economy",
+      "title": "The satellite chip plays nobody is talking about",
+      "body": [
+        "As SpaceX Starlink and Amazon Kuiper scale their satellite constellations aggressively, the less obvious play is the semiconductor companies supplying them. Everyone wants SpaceX exposure — but you can't buy it yet. The picks-and-shovels approach means looking at which chip companies are embedded in satellite infrastructure.",
+        "Starlink is already operational globally. Kuiper is ramping. These constellations require custom chips for phased array antennas, onboard processing, and low-latency ground terminals. The companies winning those contracts are smaller, less visible, and potentially undervalued relative to what's coming."
+      ],
+      "take": "Global satellite internet changes the addressable market for every SaaS product. When reliable internet reaches rural landlords and tenants everywhere, the PropTrack opportunity expands significantly. But the near-term trade is in the chip suppliers before the SpaceX IPO catalyzes the whole sector."
     }
-  ],
-  "content": "Welcome to this week's roundup. Five stories that caught my attention, with my unfiltered take on each."
+  ]
 }

@@ -1,20 +1,21 @@
 import fs from "fs";
 import path from "path";
 
+export interface Story {
+  tag: string;
+  title: string;
+  body: string[];
+  take: string;
+}
+
 export interface BlogPost {
   slug: string;
+  issue: number;
   title: string;
   date: string;
   summary: string;
+  intro: string;
   stories: Story[];
-  content: string;
-}
-
-export interface Story {
-  title: string;
-  source: string;
-  url: string;
-  take: string;
 }
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
