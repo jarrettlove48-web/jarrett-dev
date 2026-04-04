@@ -1,0 +1,12 @@
+{
+  "slug": "capri-2026",
+  "title": "Capri",
+  "date": "2026-02",
+  "location": "Capri, Italy",
+  "description": "Winter Olympics brought me to Italy. The 9-hour time difference meant all-nighters on Salesforce builds while everyone else slept. Italy's my second home — I just happen to ship code while I'm there.",
+  "photos": [
+    { "src": "/lifestyle/capri-1.jpg", "alt": "Capri coastline from the water" },
+    { "src": "/lifestyle/capri-2.jpg", "alt": "Rock formations off the coast" },
+    { "src": "/lifestyle/capri-3.jpg", "alt": "Cliffs meeting the Mediterranean" }
+  ]
+}
