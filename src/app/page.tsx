@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const socials = [
+  { label: "Email", href: "mailto:jarrett@jarrett.love" },
   { label: "Twitter / X", href: "https://x.com/jarrettlove" },
   { label: "Instagram", href: "https://instagram.com/jarrettlove" },
   { label: "TikTok", href: "https://tiktok.com/@jarrettlovebuilds" },
-  { label: "GitHub", href: "https://github.com/jarrettlove48-web" },
 ];
 
 export default function Home() {
