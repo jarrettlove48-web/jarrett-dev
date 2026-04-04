@@ -100,7 +100,7 @@ export default function ProjectsPage() {
         </h3>
         <p className="text-text-secondary leading-relaxed">
           More ventures are coming. Follow the{" "}
-          <Link href="/blog" className="text-accent hover:text-accent-hover">
+          <Link href="/weekly-drop" className="text-accent hover:text-accent-hover">
             weekly blog
           </Link>{" "}
           to stay in the loop.

@@ -23,7 +23,7 @@ export default function BlogPage() {
           {posts.map((post) => (
             <Link
               key={post.slug}
-              href={`/blog/${post.slug}`}
+              href={`/weekly-drop/${post.slug}`}
               className="group rounded-xl border border-border bg-surface p-6 transition-colors hover:bg-surface-hover"
             >
               <div className="mb-2 flex items-center gap-3">

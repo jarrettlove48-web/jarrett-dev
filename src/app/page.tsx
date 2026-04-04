@@ -29,7 +29,7 @@ export default function Home() {
             View Projects
           </Link>
           <Link
-            href="/blog"
+            href="/weekly-drop"
             className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-text-secondary hover:text-text-primary"
           >
             Read the Blog
