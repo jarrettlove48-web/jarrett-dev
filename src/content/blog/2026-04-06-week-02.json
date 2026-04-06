@@ -1,0 +1,58 @@
+{
+  "slug": "2026-04-10-week-02",
+  "issue": 2,
+  "title": "Anthropic just bought a biotech company.\nChina's robots are doing factory internships.\nAnd your friends are injecting peptides.",
+  "date": "2026-04-10",
+  "summary": "Four stories from this week that actually matter — AI expanding into biology, humanoid robots training on real assembly lines, Bitcoin becoming a legitimate institutional asset, and the underground peptide movement that's bigger than you think.",
+  "intro": "This week felt like a preview of 2030. An AI company acquired a biotech startup. Humanoid robots started training shifts at Chinese car factories. ARK put out a framework for why Bitcoin is no longer a speculation — it's infrastructure. And millions of Americans are quietly injecting themselves with unregulated peptides they bought online. The future isn't coming. It's here. Four stories, my unfiltered take on each.",
+  "stories": [
+    {
+      "tag": "AI",
+      "title": "Anthropic bought a biotech startup for $400 million",
+      "url": "https://techcrunch.com/2026/04/03/anthropic-buys-biotech-startup-coefficient-bio-in-400m-deal-reports/",
+      "source": "TechCrunch",
+      "body": [
+        "Anthropic acquired Coefficient Bio, a stealth-mode biotech AI startup, in a $400 million stock deal. The company was building AI tools for biological research and drug discovery — and Anthropic just absorbed it entirely.",
+        "This isn't a talent acqui-hire. This is Anthropic saying: Claude isn't just for code and conversation. It's for biology. Drug discovery, genetic research, protein modeling — the kind of problems where the compute advantage of frontier AI could compress decades of research into years.",
+        "The deal was done in stock, not cash, which tells you Anthropic sees this as a long-term strategic play, not an expense. They're betting that the same architecture that makes Claude good at reasoning through complex code will make it good at reasoning through complex biology."
+      ],
+      "take": "This is the most important AI acquisition of the year so far. Every major AI lab is going to follow. Why? Because biotech is where AI can generate the most economic value — a single successful drug is worth tens of billions. Anthropic is positioning Claude not just as the best coding assistant, but as a research platform for the hardest problems in science. If you're a founder building in healthtech or biotech, pay attention — the infrastructure layer for AI-powered biology just got serious."
+    },
+    {
+      "tag": "Robotics",
+      "title": "120 humanoid robots are training in Chinese factories right now",
+      "url": "https://interestingengineering.com/ai-robotics/china-ai-humanoid-robots-factory-internships",
+      "source": "Interesting Engineering",
+      "body": [
+        "At Dongfeng Liuzhou Motor in Guangxi, China, eleven UBTech Walker S1 humanoid robots are working shifts on the factory floor — sorting parts, moving bins, collecting containers. They navigate using visual systems and follow instructor guidance to reach designated workstations. They're calling them 'interns.'",
+        "But this isn't just one factory. Approximately 120 humanoid robots are simultaneously training across a dedicated embodied AI data collection center in Liuzhou. The facility replicates production environments across automotive, construction equipment, pharmaceuticals, and food production.",
+        "The precision challenges are real — robots repeatedly practice picking up screws smaller than a fingernail using two fingers. Unlike humans who rely on instinct, every motion has to be algorithmically refined. UBTech partnered with Siemens to scale production, targeting 10,000 units annually. A separate facility by Leju Robotics is already completing a new robot every 30 minutes."
+      ],
+      "take": "This is the part most people miss about the AI revolution — it's not just software. China is training humanoid robots on real factory floors at scale, and they're building the production capacity to ship 10,000 a year. A new robot every 30 minutes. The implications for global manufacturing labor are massive. American companies are focused on AI chatbots. China is focused on AI that can physically build things. That gap matters more than any benchmark score."
+    },
+    {
+      "tag": "Bitcoin",
+      "title": "ARK Invest laid out the institutional case for Bitcoin — and the numbers are hard to ignore",
+      "url": "https://www.ark-invest.com/articles/analyst-research/bitcoins-evolving-institutional-role",
+      "source": "ARK Invest",
+      "body": [
+        "ARK's latest research reframes Bitcoin from speculation to portfolio infrastructure. Their thesis: Bitcoin is a scarce, non-sovereign asset in an era of government deficits, trade wars, and evolving monetary policy. It's a high-beta extension of gold with low correlation to other assets.",
+        "The data backs it up. In 2025, US spot Bitcoin ETFs and digital asset treasuries absorbed 1.2x the amount of newly mined Bitcoin plus dormant coins re-entering circulation. By year-end, ETFs and DATs held over 12% of total Bitcoin outstanding. The supply squeeze is structural, not speculative.",
+        "ARK's price targets: $300,000 to $1.5 million per Bitcoin by 2030, driven by institutional allocation that's still in its early innings. Volatility and drawdowns have decreased over a full market cycle, making the risk-adjusted case for portfolio inclusion stronger than ever."
+      ],
+      "take": "Forget the price predictions for a second. The real signal is the absorption rate — institutions are buying more Bitcoin than is being created. That's a supply-demand setup that doesn't need hype to work. When Schwab launches direct trading later this year and the CLARITY Act gives regulatory certainty, the next wave of allocation isn't retail FOMO — it's pension funds and endowments following the math. The 2017 crowd bought Bitcoin on vibes. The 2026 crowd is buying it on portfolio theory."
+    },
+    {
+      "tag": "Health",
+      "title": "Millions of Americans are injecting unregulated peptides — and nobody's talking about it",
+      "url": "https://www.newyorker.com/magazine/2026/04/13/why-are-people-injecting-themselves-with-peptides",
+      "source": "The New Yorker",
+      "body": [
+        "The New Yorker published a deep dive on the exploding peptide underground. Millions of Americans are self-injecting compounds like BPC-157, GHK-Cu, and various growth hormone secretagogues for muscle building, skin rejuvenation, injury recovery, and longevity. Most aren't FDA-approved for human use. Many are purchased from overseas research chemical sites.",
+        "The scale is alarming. Peptide use is rampant among tech workers, gym culture, and even students at elite prep schools. When startup Finnrick tested commercially available peptides, 30% were mislabeled, under-dosed, over-dosed, or contaminated with toxins and bacteria.",
+        "RFK Jr. has vowed to end what he calls the 'FDA's war on peptides,' aligning with the Make America Healthy Again movement. The regulatory landscape is shifting — but the science hasn't caught up. Most evidence for these compounds comes from rat studies, not human clinical trials."
+      ],
+      "take": "This is the most under-covered health story in America right now. You have a massive population self-experimenting with compounds that haven't been tested in humans, buying them from unregulated overseas suppliers, and a political movement actively weakening the guardrails. 30% contamination rate. That's not a wellness trend — that's a public health event waiting to happen. The opportunity for founders: regulated, tested, transparent peptide delivery is a billion-dollar market if someone builds it right. The current model of buying research chemicals off the internet is going to produce a horror story, and the company that's already positioned as the trusted alternative wins everything."
+    }
+  ]
+}
