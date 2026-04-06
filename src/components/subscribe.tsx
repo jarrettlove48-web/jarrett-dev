@@ -38,7 +38,7 @@ export function Subscribe() {
     <div className="rounded-xl border border-border bg-surface p-6 sm:p-8">
       <h3 className="mb-1 text-lg font-bold">Get the weekly drop</h3>
       <p className="mb-5 text-sm text-text-secondary">
-        5 stories. My POV. Every Monday. No spam, unsubscribe anytime.
+        5 stories. My POV. Every Friday. No spam, unsubscribe anytime.
       </p>
 
       {status === "success" ? (

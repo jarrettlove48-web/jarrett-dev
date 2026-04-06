@@ -29,10 +29,10 @@ export function renderWelcomeEmail(unsubscribeUrl: string): string {
           <tr>
             <td style="padding-bottom: 24px;">
               <p style="margin: 0 0 16px 0; font-size: 16px; color: #a3a3a3; line-height: 1.7;">
-                Welcome to <strong style="color: #fafafa;">It's All Love Weekly</strong> — every Monday I break down the 5 biggest stories in tech, markets, and building. No fluff. Just what's actually happening, with my take on it.
+                Welcome to <strong style="color: #fafafa;">It's All Love Weekly</strong> — every Friday I break down the 5 biggest stories in tech, markets, and building. No fluff. Just what's actually happening, with my take on it.
               </p>
               <p style="margin: 0; font-size: 16px; color: #a3a3a3; line-height: 1.7;">
-                Your first drop lands next Monday morning. In the meantime, check out the latest issue on the site.
+                Your first drop lands next Friday morning. In the meantime, check out the latest issue on the site.
               </p>
             </td>
           </tr>
@@ -51,7 +51,7 @@ export function renderWelcomeEmail(unsubscribeUrl: string): string {
               <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                 <tr>
                   <td style="padding: 8px 0; font-size: 14px; color: #a3a3a3; line-height: 1.6;">
-                    <span style="color: #3b82f6; margin-right: 8px;">&#8226;</span> 5 stories every Monday — AI, space, crypto, SaaS, builder culture
+                    <span style="color: #3b82f6; margin-right: 8px;">&#8226;</span> 5 stories every Friday — AI, space, crypto, SaaS, builder culture
                   </td>
                 </tr>
                 <tr>

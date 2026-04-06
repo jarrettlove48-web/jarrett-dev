@@ -18,6 +18,7 @@ export interface BlogPost {
   summary: string;
   intro: string;
   stories: Story[];
+  published?: boolean;
 }
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
@@ -30,6 +31,7 @@ export function getAllPosts(): BlogPost[] {
       const raw = fs.readFileSync(path.join(BLOG_DIR, file), "utf-8");
       return JSON.parse(raw) as BlogPost;
     })
+    .filter((p) => p.published !== false)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
