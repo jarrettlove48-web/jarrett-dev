@@ -3,8 +3,8 @@
   "issue": 2,
   "title": "Anthropic just bought a biotech company.\nChina's robots are doing factory internships.\nAnd your friends are injecting peptides.",
   "date": "2026-04-10",
-  "summary": "Four stories from this week that actually matter — AI expanding into biology, humanoid robots training on real assembly lines, Bitcoin becoming a legitimate institutional asset, and the underground peptide movement that's bigger than you think.",
-  "intro": "This week felt like a preview of 2030. An AI company acquired a biotech startup. Humanoid robots started training shifts at Chinese car factories. ARK put out a framework for why Bitcoin is no longer a speculation — it's infrastructure. And millions of Americans are quietly injecting themselves with unregulated peptides they bought online. The future isn't coming. It's here. Four stories, my unfiltered take on each.",
+  "summary": "Five stories from this week that actually matter — AI expanding into biology, humanoid robots training on assembly lines, Bitcoin as institutional infrastructure, the peptide underground, and the government giving every newborn a stock portfolio.",
+  "intro": "This week felt like a preview of 2030. An AI company acquired a biotech startup. Humanoid robots started training shifts at Chinese car factories. ARK put out a framework for why Bitcoin is no longer a speculation — it's infrastructure. Millions of Americans are quietly injecting themselves with unregulated peptides. And the U.S. Treasury just tapped Robinhood to give every newborn a stock market account. Five stories, my unfiltered take on each.",
   "stories": [
     {
       "tag": "AI",
@@ -53,6 +53,18 @@
         "RFK Jr. has vowed to end what he calls the 'FDA's war on peptides,' aligning with the Make America Healthy Again movement. The regulatory landscape is shifting — but the science hasn't caught up. Most evidence for these compounds comes from rat studies, not human clinical trials."
       ],
       "take": "This is the most under-covered health story in America right now. You have a massive population self-experimenting with compounds that haven't been tested in humans, buying them from unregulated overseas suppliers, and a political movement actively weakening the guardrails. 30% contamination rate. That's not a wellness trend — that's a public health event waiting to happen. The opportunity for founders: regulated, tested, transparent peptide delivery is a billion-dollar market if someone builds it right. The current model of buying research chemicals off the internet is going to produce a horror story, and the company that's already positioned as the trusted alternative wins everything."
+    },
+    {
+      "tag": "Policy",
+      "title": "The U.S. Treasury just tapped Robinhood to give every newborn a stock portfolio",
+      "url": "https://www.cnbc.com/2026/04/06/treasury-trump-accounts-bny-robinhood.html",
+      "source": "CNBC",
+      "body": [
+        "The Treasury Department designated BNY Mellon as the financial agent and Robinhood as the brokerage to run 'Trump Accounts' — government-backed investment accounts that give every child born between 2025 and 2028 a $1,000 deposit invested in broad U.S. stock index funds. An estimated 25 million families are eligible.",
+        "The rules are specific: money must go into low-cost index funds tracking the overall U.S. market — think S&P 500. No individual stocks, no sector bets, no leverage. Maximum 0.10% annual fees. If left untouched and fully funded, the Treasury estimates an account could grow to $1.9 million by age 28.",
+        "BNY and Robinhood are building a custom white-label app exclusively for Treasury. This isn't Robinhood's trading platform — it's a government savings product with Robinhood's UI. The program effectively creates millions of new passive index fund investors before they can walk."
+      ],
+      "take": "Here's the real question: does this close the wealth gap or widen it? On one hand, this gives every American a stake in the market from birth — if AI-driven productivity gains and inflation push the S&P 500 to 15,000 or 20,000 over the next two decades, these kids ride that wave. That's genuinely powerful. On the other hand, $1,000 is a rounding error compared to what wealthy families are already investing for their children. And it creates another consistent, guaranteed bidder in U.S. equities — which benefits people who already hold stocks the most. The optimistic read: this is the most progressive wealth-building policy in a generation, disguised as a Trump branding exercise. The cynical read: it's a structural bid under the stock market funded by taxpayers. The truth is probably both. Either way, 25 million new index fund accounts is a tectonic shift in who owns America."
     }
   ]
 }
