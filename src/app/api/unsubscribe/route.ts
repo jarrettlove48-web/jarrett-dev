@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SUPABASE_URL = "https://tfshawyalkvxmryjqbzh.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmc2hhd3lhbGt2eG1yeWpxYnpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4MTg2MTQsImV4cCI6MjA4NzM5NDYxNH0.0E2NliQRhELsKP7aggXGwJd_LtQcXlabXr4ft0paEtw";
-
+const SUPABASE_URL = process.env.SUPABASE_URL!;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY!;
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token");
 
