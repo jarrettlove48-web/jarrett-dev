@@ -16,8 +16,8 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-xl">
-      <div className="flex h-14 items-center justify-between px-6">
+    <nav className="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.07)] bg-[rgba(3,6,15,0.4)] backdrop-blur-xl">
+      <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-6">
         <Link href="/" className="font-mono text-[15px] font-medium tracking-tight">
           jarrett<span className="text-accent">.</span>love
         </Link>
@@ -54,7 +54,7 @@ export function Nav() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="flex flex-col gap-1 border-t border-border px-6 py-4 sm:hidden">
+        <div className="flex flex-col gap-1 border-t border-[rgba(255,255,255,0.07)] px-6 py-4 sm:hidden">
           {links.map(({ href, label }) => (
             <Link
               key={href}
@@ -62,7 +62,7 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 pathname === href || (href !== "/" && pathname.startsWith(href))
-                  ? "text-text-primary bg-surface"
+                  ? "text-text-primary bg-[rgba(255,255,255,0.05)]"
                   : "text-text-secondary"
               }`}
             >
