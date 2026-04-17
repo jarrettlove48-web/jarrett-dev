@@ -17,11 +17,13 @@ type Connection = {
   a: number;
   b: number;
   strength: number;
+  cx: number;
+  cy: number;
 };
 
 type Pulse = {
-  from: number;
-  to: number;
+  connRef: Connection;
+  forward: boolean;
   t: number;
   speed: number;
   depth: number;
@@ -32,16 +34,29 @@ type Props = {
   accent?: string;
   /** Approximate node count. Rejection-sampled, so actual count may be slightly lower. */
   nodeCount?: number;
-  /** Seconds between spontaneous firing bursts (range). */
+  /** Frame range between spontaneous firing bursts. */
   burstIntervalFrames?: [number, number];
   /** Optional className for the canvas element. */
   className?: string;
 };
 
+function bezPt(
+  ax: number, ay: number,
+  cx: number, cy: number,
+  bx: number, by: number,
+  t: number
+) {
+  const it = 1 - t;
+  return {
+    x: it * it * ax + 2 * it * t * cx + t * t * bx,
+    y: it * it * ay + 2 * it * t * cy + t * t * by,
+  };
+}
+
 export default function NeuralDish({
   accent = "#6fa8ff",
-  nodeCount = 42,
-  burstIntervalFrames = [60, 200],
+  nodeCount = 28,
+  burstIntervalFrames = [180, 420],
   className = "",
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -53,18 +68,22 @@ export default function NeuralDish({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Parse accent hex into RGB for building rgba strings
     const hex = accent.replace("#", "");
     const ar = parseInt(hex.substring(0, 2), 16);
     const ag = parseInt(hex.substring(2, 4), 16);
     const ab = parseInt(hex.substring(4, 6), 16);
     const rgba = (a: number) => `rgba(${ar}, ${ag}, ${ab}, ${a})`;
-    // Brighter tint for pulse heads / fired nodes
     const brightR = Math.min(255, ar + 70);
     const brightG = Math.min(255, ag + 50);
     const brightB = Math.min(255, ab + 30);
     const brightRgba = (a: number) =>
       `rgba(${brightR}, ${brightG}, ${brightB}, ${a})`;
+    // Softer resting node color — less saturated, slightly warmer
+    const softR = Math.min(255, ar + 40);
+    const softG = Math.min(255, ag + 17);
+    const softB = Math.min(255, ab - 15);
+    const softRgba = (a: number) =>
+      `rgba(${softR}, ${softG}, ${softB}, ${a})`;
 
     let width = 0;
     let height = 0;
@@ -82,13 +101,12 @@ export default function NeuralDish({
       burstIntervalFrames[0] +
       Math.random() * (burstIntervalFrames[1] - burstIntervalFrames[0]);
 
-    const MAX_CONNECTIONS_PER_NODE = 4;
-    const CONNECTION_DISTANCE_FACTOR = 0.45;
+    const MAX_CONN = 3;
 
     function initNetwork() {
       nodes = [];
-      const attempts = nodeCount * 30;
-      const minDist = radius * 0.18;
+      const attempts = nodeCount * 40;
+      const minDist = radius * 0.24;
       let tries = 0;
       while (nodes.length < nodeCount && tries < attempts) {
         tries++;
@@ -112,15 +130,15 @@ export default function NeuralDish({
             baseX: x,
             baseY: y,
             phase: Math.random() * Math.PI * 2,
-            driftAmp: 0.6 + Math.random() * 1.2,
+            driftAmp: 0.4 + Math.random() * 0.8,
             pulseIntensity: 0,
-            radius: 1.6 + Math.random() * 0.8,
+            radius: 1.8 + Math.random() * 1,
           });
         }
       }
 
       connections = [];
-      const maxConnDist = radius * CONNECTION_DISTANCE_FACTOR * 2;
+      const maxConnDist = radius * 1.1;
       const seen = new Set<string>();
       for (let i = 0; i < nodes.length; i++) {
         const dists: { j: number; d: number }[] = [];
@@ -132,16 +150,33 @@ export default function NeuralDish({
           if (d < maxConnDist) dists.push({ j, d });
         }
         dists.sort((a, b) => a.d - b.d);
-        const count = Math.min(MAX_CONNECTIONS_PER_NODE, dists.length);
+        const count = Math.min(MAX_CONN, dists.length);
         for (let k = 0; k < count; k++) {
           const j = dists[k].j;
           const key = i < j ? `${i}-${j}` : `${j}-${i}`;
           if (!seen.has(key)) {
             seen.add(key);
+            const na = nodes[i],
+              nb = nodes[j];
+            const mx = (na.x + nb.x) / 2,
+              my = (na.y + nb.y) / 2;
+            const dx = nb.x - na.x,
+              dy = nb.y - na.y;
+            const perpX = -dy,
+              perpY = dx;
+            const len = Math.sqrt(perpX * perpX + perpY * perpY) || 1;
+            const toCenterX = centerX - mx,
+              toCenterY = centerY - my;
+            const dot = (perpX / len) * toCenterX + (perpY / len) * toCenterY;
+            const sign = dot > 0 ? -1 : 1;
+            const bend =
+              (0.08 + Math.random() * 0.15) * dists[k].d * sign;
             connections.push({
               a: i,
               b: j,
-              strength: 0.15 + Math.random() * 0.2,
+              strength: 0.1 + Math.random() * 0.15,
+              cx: mx + (perpX / len) * bend,
+              cy: my + (perpY / len) * bend,
             });
           }
         }
@@ -165,199 +200,199 @@ export default function NeuralDish({
     }
 
     function spawnPulse(fromIdx: number, depth = 0) {
-      if (depth > 3) return;
-      const candidates = connections.filter(
+      if (depth > 2) return;
+      const cands = connections.filter(
         (c) => c.a === fromIdx || c.b === fromIdx
       );
-      if (candidates.length === 0) return;
-      const fireCount = Math.min(
-        candidates.length,
-        1 + Math.floor(Math.random() * 3)
-      );
-      const shuffled = candidates
-        .slice()
-        .sort(() => Math.random() - 0.5)
-        .slice(0, fireCount);
-      for (const conn of shuffled) {
-        const target = conn.a === fromIdx ? conn.b : conn.a;
-        pulses.push({
-          from: fromIdx,
-          to: target,
-          t: 0,
-          speed: 0.012 + Math.random() * 0.008,
-          depth,
-        });
-        nodes[fromIdx].pulseIntensity = 1;
-      }
+      if (!cands.length) return;
+      const conn = cands[Math.floor(Math.random() * cands.length)];
+      const forward = conn.a === fromIdx;
+      pulses.push({
+        connRef: conn,
+        forward,
+        t: 0,
+        speed: 0.004 + Math.random() * 0.003,
+        depth,
+      });
+      nodes[fromIdx].pulseIntensity = 1;
     }
 
     function draw() {
       time += 1;
       ctx!.clearRect(0, 0, width, height);
 
-      // Dish — outer halo
-      const dishGrad = ctx!.createRadialGradient(
-        centerX,
-        centerY,
-        radius * 0.3,
-        centerX,
-        centerY,
-        radius * 1.15
-      );
-      dishGrad.addColorStop(0, rgba(0.08));
-      dishGrad.addColorStop(0.6, rgba(0.03));
-      dishGrad.addColorStop(1, rgba(0));
-      ctx!.fillStyle = dishGrad;
+      // Liquid shimmer — subtle rotating sheen
+      ctx!.save();
       ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius * 1.15, 0, Math.PI * 2);
+      ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx!.clip();
+      const shimmerAngle = time * 0.002;
+      const sx = centerX + Math.cos(shimmerAngle) * radius * 0.3;
+      const sy = centerY + Math.sin(shimmerAngle) * radius * 0.3;
+      const shimmer = ctx!.createRadialGradient(sx, sy, 0, sx, sy, radius * 0.7);
+      shimmer.addColorStop(0, rgba(0.05));
+      shimmer.addColorStop(0.5, rgba(0.02));
+      shimmer.addColorStop(1, rgba(0));
+      ctx!.fillStyle = shimmer;
+      ctx!.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      ctx!.restore();
+
+      // Dish halo with breathing
+      const breathe = 1 + Math.sin(time * 0.008) * 0.04;
+      const dg = ctx!.createRadialGradient(
+        centerX, centerY, radius * 0.3,
+        centerX, centerY, radius * 1.2 * breathe
+      );
+      dg.addColorStop(0, rgba(0.1));
+      dg.addColorStop(0.6, rgba(0.03));
+      dg.addColorStop(1, rgba(0));
+      ctx!.fillStyle = dg;
+      ctx!.beginPath();
+      ctx!.arc(centerX, centerY, radius * 1.2 * breathe, 0, Math.PI * 2);
       ctx!.fill();
 
-      // Dish rim — faint double ring
-      ctx!.strokeStyle = rgba(0.12);
-      ctx!.lineWidth = 1;
+      // Rim
+      ctx!.strokeStyle = rgba(0.1);
+      ctx!.lineWidth = 0.8;
       ctx!.beginPath();
       ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
       ctx!.stroke();
 
-      ctx!.strokeStyle = rgba(0.05);
+      ctx!.strokeStyle = rgba(0.04);
       ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius * 1.04, 0, Math.PI * 2);
+      ctx!.arc(centerX, centerY, radius * 1.05, 0, Math.PI * 2);
       ctx!.stroke();
 
-      // Meniscus highlight
-      const meniscus = ctx!.createRadialGradient(
-        centerX,
-        centerY - radius * 0.3,
-        0,
-        centerX,
-        centerY,
-        radius
+      // Meniscus
+      const men = ctx!.createRadialGradient(
+        centerX, centerY - radius * 0.3, 0,
+        centerX, centerY, radius
       );
-      meniscus.addColorStop(0, rgba(0.025));
-      meniscus.addColorStop(1, rgba(0));
-      ctx!.fillStyle = meniscus;
+      men.addColorStop(0, rgba(0.04));
+      men.addColorStop(1, rgba(0));
+      ctx!.fillStyle = men;
       ctx!.beginPath();
       ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
       ctx!.fill();
 
       // Node drift
       for (const n of nodes) {
-        n.phase += 0.005;
+        n.phase += 0.003;
         n.x = n.baseX + Math.cos(n.phase) * n.driftAmp;
         n.y = n.baseY + Math.sin(n.phase * 0.7) * n.driftAmp;
-        n.pulseIntensity *= 0.94;
+        n.pulseIntensity *= 0.97;
       }
 
-      // Baseline connections
+      // Curved connections
       for (const c of connections) {
         const a = nodes[c.a];
         const b = nodes[c.b];
-        ctx!.strokeStyle = rgba(c.strength * 0.35);
-        ctx!.lineWidth = 0.6;
+        ctx!.strokeStyle = rgba(c.strength * 0.4);
+        ctx!.lineWidth = 0.5;
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
-        ctx!.lineTo(b.x, b.y);
+        ctx!.quadraticCurveTo(c.cx, c.cy, b.x, b.y);
         ctx!.stroke();
       }
 
-      // Pulses
+      // Pulses along curves with fading trail
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         p.t += p.speed;
-        const a = nodes[p.from];
-        const b = nodes[p.to];
+        const c = p.connRef;
+        const na = nodes[c.a];
+        const nb = nodes[c.b];
+        const ax = p.forward ? na.x : nb.x;
+        const ay = p.forward ? na.y : nb.y;
+        const bx = p.forward ? nb.x : na.x;
+        const by = p.forward ? nb.y : na.y;
 
-        const segLen = 0.35;
-        const tailT = Math.max(0, p.t - segLen);
-        const headT = Math.min(1, p.t);
+        // Fading trail segments
+        const tailStart = Math.max(0, p.t - 0.4);
+        const steps = 16;
+        for (let s = 0; s < steps; s++) {
+          const t1 = tailStart + (p.t - tailStart) * (s / steps);
+          const t2 = tailStart + (p.t - tailStart) * ((s + 1) / steps);
+          const alpha = (s / steps) * 0.7;
+          const pt1 = bezPt(ax, ay, c.cx, c.cy, bx, by, t1);
+          const pt2 = bezPt(ax, ay, c.cx, c.cy, bx, by, t2);
+          ctx!.strokeStyle = brightRgba(alpha);
+          ctx!.lineWidth = 1.2;
+          ctx!.beginPath();
+          ctx!.moveTo(pt1.x, pt1.y);
+          ctx!.lineTo(pt2.x, pt2.y);
+          ctx!.stroke();
+        }
 
-        const x1 = a.x + (b.x - a.x) * tailT;
-        const y1 = a.y + (b.y - a.y) * tailT;
-        const x2 = a.x + (b.x - a.x) * headT;
-        const y2 = a.y + (b.y - a.y) * headT;
-
-        const grad = ctx!.createLinearGradient(x1, y1, x2, y2);
-        grad.addColorStop(0, rgba(0));
-        grad.addColorStop(1, brightRgba(0.9));
-        ctx!.strokeStyle = grad;
-        ctx!.lineWidth = 1.4;
+        // Pulse head
+        const head = bezPt(ax, ay, c.cx, c.cy, bx, by, Math.min(1, p.t));
+        const gg = ctx!.createRadialGradient(head.x, head.y, 0, head.x, head.y, 14);
+        gg.addColorStop(0, brightRgba(0.9));
+        gg.addColorStop(0.4, rgba(0.4));
+        gg.addColorStop(1, rgba(0));
+        ctx!.fillStyle = gg;
         ctx!.beginPath();
-        ctx!.moveTo(x1, y1);
-        ctx!.lineTo(x2, y2);
-        ctx!.stroke();
-
-        const hx = a.x + (b.x - a.x) * p.t;
-        const hy = a.y + (b.y - a.y) * p.t;
-        const glowGrad = ctx!.createRadialGradient(hx, hy, 0, hx, hy, 10);
-        glowGrad.addColorStop(0, brightRgba(0.9));
-        glowGrad.addColorStop(0.4, rgba(0.4));
-        glowGrad.addColorStop(1, rgba(0));
-        ctx!.fillStyle = glowGrad;
-        ctx!.beginPath();
-        ctx!.arc(hx, hy, 10, 0, Math.PI * 2);
+        ctx!.arc(head.x, head.y, 14, 0, Math.PI * 2);
         ctx!.fill();
 
         ctx!.fillStyle = brightRgba(1);
         ctx!.beginPath();
-        ctx!.arc(hx, hy, 1.8, 0, Math.PI * 2);
+        ctx!.arc(head.x, head.y, 1.6, 0, Math.PI * 2);
         ctx!.fill();
 
         if (p.t >= 1) {
-          nodes[p.to].pulseIntensity = 1;
-          if (Math.random() < 0.7) {
-            spawnPulse(p.to, p.depth + 1);
+          const target = p.forward ? c.b : c.a;
+          nodes[target].pulseIntensity = 1;
+          if (Math.random() < 0.5) {
+            spawnPulse(target, p.depth + 1);
           }
           pulses.splice(i, 1);
         }
       }
 
-      // Nodes
+      // Nodes — ambient glow + breathing
       for (const n of nodes) {
-        const intensity = n.pulseIntensity;
-        const baseR = n.radius;
+        const it = n.pulseIntensity;
+        const nodeBreath = 1 + Math.sin(time * 0.01 + n.phase) * 0.1;
+        const br = n.radius * nodeBreath;
 
-        if (intensity > 0.05) {
-          const glowR = baseR + 14 * intensity;
-          const g = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
-          g.addColorStop(0, brightRgba(0.5 * intensity));
-          g.addColorStop(0.5, rgba(0.25 * intensity));
+        // Always-on ambient glow
+        const ambientG = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, br + 6);
+        ambientG.addColorStop(0, rgba(0.3));
+        ambientG.addColorStop(1, rgba(0));
+        ctx!.fillStyle = ambientG;
+        ctx!.beginPath();
+        ctx!.arc(n.x, n.y, br + 6, 0, Math.PI * 2);
+        ctx!.fill();
+
+        // Fired glow
+        if (it > 0.05) {
+          const gr = br + 22 * it;
+          const g = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, gr);
+          g.addColorStop(0, brightRgba(0.5 * it));
+          g.addColorStop(0.5, rgba(0.25 * it));
           g.addColorStop(1, rgba(0));
           ctx!.fillStyle = g;
           ctx!.beginPath();
-          ctx!.arc(n.x, n.y, glowR, 0, Math.PI * 2);
+          ctx!.arc(n.x, n.y, gr, 0, Math.PI * 2);
           ctx!.fill();
         }
 
-        ctx!.fillStyle =
-          intensity > 0.1 ? brightRgba(1) : rgba(0.75);
+        // Core node
+        ctx!.fillStyle = it > 0.1 ? brightRgba(1) : softRgba(0.85);
         ctx!.beginPath();
-        ctx!.arc(n.x, n.y, baseR + intensity * 1.2, 0, Math.PI * 2);
+        ctx!.arc(n.x, n.y, br + it * 1.5, 0, Math.PI * 2);
         ctx!.fill();
-
-        ctx!.strokeStyle = rgba(0.15 + intensity * 0.5);
-        ctx!.lineWidth = 0.8;
-        ctx!.beginPath();
-        ctx!.arc(n.x, n.y, baseR + 2.5, 0, Math.PI * 2);
-        ctx!.stroke();
       }
 
-      // Periodic bursts
+      // Slow, deliberate firing
       if (time - lastBurst > nextBurstIn) {
         lastBurst = time;
         nextBurstIn =
           burstIntervalFrames[0] +
           Math.random() * (burstIntervalFrames[1] - burstIntervalFrames[0]);
-        const origin = Math.floor(Math.random() * nodes.length);
-        spawnPulse(origin, 0);
-        if (Math.random() < 0.35) {
-          const delayTimeout = setTimeout(() => {
-            if (nodes.length === 0) return;
-            spawnPulse(Math.floor(Math.random() * nodes.length), 0);
-          }, 180);
-          // Note: this timeout is intentionally fire-and-forget; it will no-op
-          // after unmount because nodes array is captured by closure of a
-          // replaced effect run. For strict cleanup, track timeouts in a ref.
-          void delayTimeout;
+        if (nodes.length > 0) {
+          spawnPulse(Math.floor(Math.random() * nodes.length), 0);
         }
       }
 
@@ -367,12 +402,12 @@ export default function NeuralDish({
     const ro = new ResizeObserver(() => resize());
     ro.observe(canvas.parentElement!);
     resize();
-    // Kickoff pulse
+
     const kickoff = window.setTimeout(() => {
       if (nodes.length > 0) {
         spawnPulse(Math.floor(Math.random() * nodes.length));
       }
-    }, 500);
+    }, 800);
 
     rafRef.current = requestAnimationFrame(draw);
 
