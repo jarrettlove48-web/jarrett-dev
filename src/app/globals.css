@@ -93,10 +93,10 @@ a, button { cursor: none; }
   border-radius: 4% / 8%;
   background:
     radial-gradient(ellipse at 50% 40%,
-      rgba(60, 130, 255, 0.5) 0%,
-      rgba(40, 100, 230, 0.32) 20%,
-      rgba(25, 70, 200, 0.18) 40%,
-      rgba(15, 40, 150, 0.08) 60%,
+      rgba(60, 130, 255, 0.3) 0%,
+      rgba(40, 100, 230, 0.19) 20%,
+      rgba(25, 70, 200, 0.11) 40%,
+      rgba(15, 40, 150, 0.05) 60%,
       transparent 80%
     );
   filter: blur(50px);
@@ -113,8 +113,8 @@ a, button { cursor: none; }
   border-radius: 50%;
   background:
     radial-gradient(ellipse at 50% 50%,
-      rgba(50, 110, 240, 0.25) 0%,
-      rgba(30, 80, 200, 0.12) 35%,
+      rgba(50, 110, 240, 0.15) 0%,
+      rgba(30, 80, 200, 0.07) 35%,
       transparent 70%
     );
   filter: blur(60px);
@@ -132,25 +132,25 @@ a, button { cursor: none; }
 .wash-blue {
   width: 80vw; height: 80vw;
   top: -15%; left: 10%;
-  background: radial-gradient(circle, rgba(70, 130, 255, 0.28), transparent 65%);
+  background: radial-gradient(circle, rgba(70, 130, 255, 0.17), transparent 65%);
   animation: drift1 16s ease-in-out infinite;
 }
 .wash-violet {
   width: 65vw; height: 65vw;
   top: 10%; right: -5%;
-  background: radial-gradient(circle, rgba(40, 80, 200, 0.2), transparent 65%);
+  background: radial-gradient(circle, rgba(40, 80, 200, 0.12), transparent 65%);
   animation: drift2 20s ease-in-out infinite;
 }
 .wash-warm {
   width: 45vw; height: 45vw;
   bottom: 10%; left: 10%;
-  background: radial-gradient(circle, rgba(180, 140, 255, 0.08), transparent 70%);
+  background: radial-gradient(circle, rgba(180, 140, 255, 0.05), transparent 70%);
   animation: drift3 18s ease-in-out infinite;
 }
 .wash-cyan {
   width: 55vw; height: 55vw;
   top: 30%; left: 30%;
-  background: radial-gradient(circle, rgba(70, 180, 255, 0.14), transparent 65%);
+  background: radial-gradient(circle, rgba(70, 180, 255, 0.08), transparent 65%);
   animation: drift1 22s ease-in-out infinite reverse;
 }
 
@@ -159,8 +159,8 @@ a, button { cursor: none; }
   bottom: 0; left: 0; right: 0;
   height: 50vh;
   background: linear-gradient(to top,
-    rgba(40, 80, 200, 0.1) 0%,
-    rgba(50, 100, 220, 0.04) 40%,
+    rgba(40, 80, 200, 0.06) 0%,
+    rgba(50, 100, 220, 0.024) 40%,
     transparent 100%
   );
 }
