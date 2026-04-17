@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NeuralDish from "@/components/NeuralDish";
 
 const socials = [
   { label: "Email", href: "mailto:hello@jarrett.love" },
@@ -12,23 +13,26 @@ export default function Home() {
     <div className="flex flex-col">
       {/* Hero */}
       <section className="hero">
-        <div className="glass hero-card">
-          <h1>
-            Builder. Strategist.
-            <br />
-            <span className="accent">Shipping what matters.</span>
-          </h1>
-          <p>
-            I build things and pay attention. Weekly notes on tech, markets,
-            and what&apos;s actually happening.
-          </p>
-          <div className="hero-buttons">
-            <Link href="/projects" className="btn-primary">
-              View Projects &rarr;
-            </Link>
-            <Link href="/weekly-drop" className="btn-glass">
-              Read the Blog
-            </Link>
+        <div className="glass hero-card hero-card-with-dish">
+          <NeuralDish />
+          <div className="hero-content">
+            <h1>
+              Builder. Strategist.
+              <br />
+              <span className="accent">Shipping what matters.</span>
+            </h1>
+            <p>
+              I build things and pay attention. Weekly notes on tech, markets,
+              and what&apos;s actually happening.
+            </p>
+            <div className="hero-buttons">
+              <Link href="/projects" className="btn-primary">
+                View Projects &rarr;
+              </Link>
+              <Link href="/weekly-drop" className="btn-glass">
+                Read the Blog
+              </Link>
+            </div>
           </div>
         </div>
       </section>
