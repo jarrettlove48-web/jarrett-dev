@@ -12,13 +12,9 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="hero">
-        <div className="glass hero-card hero-card-with-dish">
-          <NeuralDish />
-          <div className="hero-content hero-content-centered">
-            <h1 className="hero-name">JARRETT LOVE</h1>
-          </div>
-        </div>
+      <section className="hero-full">
+        <NeuralDish />
+        <h1 className="hero-name">JARRETT LOVE</h1>
       </section>
 
       {/* It's All Love Weekly */}
