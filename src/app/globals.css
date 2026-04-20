@@ -219,49 +219,33 @@ a, button { cursor: none; }
   border-color: rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.05);
 }
-
 /* ── Hero ── */
-.hero {
-  padding: 80px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-.hero-card {
-  padding: 48px 40px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-.hero-card-with-dish {
+.hero-full {
   position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  min-height: 520px;
 }
-.neural-dish {
+.hero-full .neural-dish {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
-.hero-content {
+.hero-name {
   position: relative;
   z-index: 2;
-  max-width: 560px;
-}
-.hero-content-centered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: none;
   pointer-events: none;
-}
-.hero-name {
-  font-size: clamp(3rem, 9vw, 6rem);
-  font-weight: 700;
+  font-size: clamp(4rem, 14vw, 12rem);
+  font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
   text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
   background: linear-gradient(135deg, #ffffff, #7ec4ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
