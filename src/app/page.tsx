@@ -15,52 +15,21 @@ export default function Home() {
       <section className="hero">
         <div className="glass hero-card hero-card-with-dish">
           <NeuralDish />
-          <div className="hero-content">
-            <h1>
-              Builder. Strategist.
-              <br />
-              <span className="accent">Shipping what matters.</span>
-            </h1>
-            <p>
-              I build things and pay attention. Weekly notes on tech, markets,
-              and what&apos;s actually happening.
-            </p>
-            <div className="hero-buttons">
-              <Link href="/projects" className="btn-primary">
-                View Projects &rarr;
-              </Link>
-              <Link href="/weekly-drop" className="btn-glass">
-                Read the Blog
-              </Link>
-            </div>
+          <div className="hero-content hero-content-centered">
+            <h1 className="hero-name">JARRETT LOVE</h1>
           </div>
         </div>
       </section>
 
-      {/* What I Do */}
+      {/* It's All Love Weekly */}
       <section className="section">
-        <h2>What I Do</h2>
-        <div className="cards-grid">
-          {[
-            {
-              title: "Salesforce",
-              desc: "Admin & developer building enterprise solutions that scale.",
-            },
-            {
-              title: "Indie Products",
-              desc: "Founder of PropTrack. Building tools that solve real problems.",
-            },
-            {
-              title: "Weekly Insights",
-              desc: "Curated tech news with my unfiltered POV, every week.",
-            },
-          ].map((item) => (
-            <div key={item.title} className="glass card">
-              <h3>{item.title}</h3>
-              <p>{item.desc}</p>
-            </div>
-          ))}
-        </div>
+        <h2>It&apos;s All Love Weekly</h2>
+        <p className="text-text-secondary">
+          Weekly tech updates. No fluff, just what I&apos;m actually paying attention to.
+        </p>
+        <Link href="/weekly-drop" className="btn-primary" style={{ alignSelf: "flex-start", marginTop: "8px" }}>
+          Read the latest &rarr;
+        </Link>
       </section>
 
       {/* Connect */}
