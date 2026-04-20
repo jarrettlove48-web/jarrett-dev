@@ -21,7 +21,7 @@ export default function Home() {
       <section className="section">
         <h2>It&apos;s All Love Weekly</h2>
         <p className="text-text-secondary">
-          Weekly tech updates. No fluff, just what I&apos;m actually paying attention to.
+          Tech, markets, AI. My take, every week.
         </p>
         <Link href="/weekly-drop" className="btn-primary" style={{ marginTop: "8px" }}>
           Read the latest &rarr;
