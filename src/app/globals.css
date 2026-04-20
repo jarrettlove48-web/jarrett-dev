@@ -241,7 +241,6 @@ a, button { cursor: none; }
   position: absolute;
   inset: 0;
   z-index: 0;
-  pointer-events: none;
 }
 .hero-content {
   position: relative;
@@ -254,15 +253,19 @@ a, button { cursor: none; }
   justify-content: center;
   width: 100%;
   max-width: none;
-  min-height: 400px;
+  pointer-events: none;
 }
 .hero-name {
-  font-family: var(--font-mono);
-  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-size: clamp(3rem, 9vw, 6rem);
   font-weight: 700;
-  letter-spacing: 0.15em;
+  line-height: 1;
+  letter-spacing: -0.04em;
   text-align: center;
-  color: var(--color-text-primary);
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff, #7ec4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ── Buttons ── */

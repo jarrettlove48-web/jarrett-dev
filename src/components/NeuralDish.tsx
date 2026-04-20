@@ -10,6 +10,7 @@ type Node = {
   phase: number;
   driftAmp: number;
   pulseIntensity: number;
+  hoverIntensity: number;
   radius: number;
 };
 
@@ -17,48 +18,24 @@ type Connection = {
   a: number;
   b: number;
   strength: number;
-  cx: number;
-  cy: number;
 };
 
 type Pulse = {
-  connRef: Connection;
-  forward: boolean;
+  from: number;
+  to: number;
   t: number;
   speed: number;
   depth: number;
 };
 
-type Props = {
-  /** CSS color for nodes, lines, and glow. Defaults to the site accent. */
-  accent?: string;
-  /** Approximate node count. Rejection-sampled, so actual count may be slightly lower. */
-  nodeCount?: number;
-  /** Frame range between spontaneous firing bursts. */
-  burstIntervalFrames?: [number, number];
-  /** Optional className for the canvas element. */
-  className?: string;
+type Ripple = {
+  x: number;
+  y: number;
+  t: number;
+  life: number;
 };
 
-function bezPt(
-  ax: number, ay: number,
-  cx: number, cy: number,
-  bx: number, by: number,
-  t: number
-) {
-  const it = 1 - t;
-  return {
-    x: it * it * ax + 2 * it * t * cx + t * t * bx,
-    y: it * it * ay + 2 * it * t * cy + t * t * by,
-  };
-}
-
-export default function NeuralDish({
-  accent = "#6fa8ff",
-  nodeCount = 28,
-  burstIntervalFrames = [180, 420],
-  className = "",
-}: Props) {
+export default function NeuralDish({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
 
@@ -68,23 +45,6 @@ export default function NeuralDish({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const hex = accent.replace("#", "");
-    const ar = parseInt(hex.substring(0, 2), 16);
-    const ag = parseInt(hex.substring(2, 4), 16);
-    const ab = parseInt(hex.substring(4, 6), 16);
-    const rgba = (a: number) => `rgba(${ar}, ${ag}, ${ab}, ${a})`;
-    const brightR = Math.min(255, ar + 70);
-    const brightG = Math.min(255, ag + 50);
-    const brightB = Math.min(255, ab + 30);
-    const brightRgba = (a: number) =>
-      `rgba(${brightR}, ${brightG}, ${brightB}, ${a})`;
-    // Softer resting node color — less saturated, slightly warmer
-    const softR = Math.min(255, ar + 40);
-    const softG = Math.min(255, ag + 17);
-    const softB = Math.min(255, ab - 15);
-    const softRgba = (a: number) =>
-      `rgba(${softR}, ${softG}, ${softB}, ${a})`;
-
     let width = 0;
     let height = 0;
     let centerX = 0;
@@ -92,23 +52,25 @@ export default function NeuralDish({
     let radius = 0;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
+    const NODE_COUNT = 45;
+    const MAX_CONN = 4;
+
     let nodes: Node[] = [];
     let connections: Connection[] = [];
     let pulses: Pulse[] = [];
+    let ripples: Ripple[] = [];
     let time = 0;
     let lastBurst = 0;
-    let nextBurstIn =
-      burstIntervalFrames[0] +
-      Math.random() * (burstIntervalFrames[1] - burstIntervalFrames[0]);
+    let mouseX = -9999;
+    let mouseY = -9999;
+    let mouseActive = false;
+    let lastMouseFire = 0;
 
-    const MAX_CONN = 3;
-
-    function initNetwork() {
+    function init() {
       nodes = [];
-      const attempts = nodeCount * 40;
-      const minDist = radius * 0.24;
+      const minDist = radius * 0.17;
       let tries = 0;
-      while (nodes.length < nodeCount && tries < attempts) {
+      while (nodes.length < NODE_COUNT && tries < NODE_COUNT * 30) {
         tries++;
         const a = Math.random() * Math.PI * 2;
         const r = Math.sqrt(Math.random()) * radius * 0.92;
@@ -116,36 +78,26 @@ export default function NeuralDish({
         const y = centerY + Math.sin(a) * r;
         let ok = true;
         for (const n of nodes) {
-          const dx = n.x - x;
-          const dy = n.y - y;
-          if (dx * dx + dy * dy < minDist * minDist) {
-            ok = false;
-            break;
-          }
+          const dx = n.x - x, dy = n.y - y;
+          if (dx * dx + dy * dy < minDist * minDist) { ok = false; break; }
         }
-        if (ok) {
-          nodes.push({
-            x,
-            y,
-            baseX: x,
-            baseY: y,
-            phase: Math.random() * Math.PI * 2,
-            driftAmp: 0.4 + Math.random() * 0.8,
-            pulseIntensity: 0,
-            radius: 1.8 + Math.random() * 1,
-          });
-        }
+        if (ok) nodes.push({
+          x, y, baseX: x, baseY: y,
+          phase: Math.random() * Math.PI * 2,
+          driftAmp: 0.6 + Math.random() * 1.2,
+          pulseIntensity: 0,
+          hoverIntensity: 0,
+          radius: 1.6 + Math.random() * 0.9,
+        });
       }
-
       connections = [];
-      const maxConnDist = radius * 1.1;
+      const maxConnDist = radius * 0.9;
       const seen = new Set<string>();
       for (let i = 0; i < nodes.length; i++) {
         const dists: { j: number; d: number }[] = [];
         for (let j = 0; j < nodes.length; j++) {
           if (i === j) continue;
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
+          const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d < maxConnDist) dists.push({ j, d });
         }
@@ -156,28 +108,7 @@ export default function NeuralDish({
           const key = i < j ? `${i}-${j}` : `${j}-${i}`;
           if (!seen.has(key)) {
             seen.add(key);
-            const na = nodes[i],
-              nb = nodes[j];
-            const mx = (na.x + nb.x) / 2,
-              my = (na.y + nb.y) / 2;
-            const dx = nb.x - na.x,
-              dy = nb.y - na.y;
-            const perpX = -dy,
-              perpY = dx;
-            const len = Math.sqrt(perpX * perpX + perpY * perpY) || 1;
-            const toCenterX = centerX - mx,
-              toCenterY = centerY - my;
-            const dot = (perpX / len) * toCenterX + (perpY / len) * toCenterY;
-            const sign = dot > 0 ? -1 : 1;
-            const bend =
-              (0.08 + Math.random() * 0.15) * dists[k].d * sign;
-            connections.push({
-              a: i,
-              b: j,
-              strength: 0.1 + Math.random() * 0.15,
-              cx: mx + (perpX / len) * bend,
-              cy: my + (perpY / len) * bend,
-            });
+            connections.push({ a: i, b: j, strength: 0.15 + Math.random() * 0.2 });
           }
         }
       }
@@ -196,201 +127,179 @@ export default function NeuralDish({
       centerX = width / 2;
       centerY = height / 2;
       radius = Math.min(width, height) * 0.42;
-      initNetwork();
+      init();
     }
 
     function spawnPulse(fromIdx: number, depth = 0) {
-      if (depth > 2) return;
-      const cands = connections.filter(
-        (c) => c.a === fromIdx || c.b === fromIdx
-      );
+      if (depth > 3) return;
+      const cands = connections.filter(c => c.a === fromIdx || c.b === fromIdx);
       if (!cands.length) return;
-      const conn = cands[Math.floor(Math.random() * cands.length)];
-      const forward = conn.a === fromIdx;
-      pulses.push({
-        connRef: conn,
-        forward,
-        t: 0,
-        speed: 0.004 + Math.random() * 0.003,
-        depth,
-      });
-      nodes[fromIdx].pulseIntensity = 1;
+      const fireCount = Math.min(cands.length, 1 + Math.floor(Math.random() * 3));
+      const shuffled = cands.slice().sort(() => Math.random() - 0.5).slice(0, fireCount);
+      for (const conn of shuffled) {
+        const target = conn.a === fromIdx ? conn.b : conn.a;
+        pulses.push({ from: fromIdx, to: target, t: 0, speed: 0.014 + Math.random() * 0.008, depth });
+        nodes[fromIdx].pulseIntensity = 1;
+      }
+      ripples.push({ x: nodes[fromIdx].x, y: nodes[fromIdx].y, t: 0, life: 60 });
     }
 
     function draw() {
-      time += 1;
+      time++;
       ctx!.clearRect(0, 0, width, height);
 
-      // Liquid shimmer — subtle rotating sheen
-      ctx!.save();
-      ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx!.clip();
-      const shimmerAngle = time * 0.002;
-      const sx = centerX + Math.cos(shimmerAngle) * radius * 0.3;
-      const sy = centerY + Math.sin(shimmerAngle) * radius * 0.3;
-      const shimmer = ctx!.createRadialGradient(sx, sy, 0, sx, sy, radius * 0.7);
-      shimmer.addColorStop(0, rgba(0.05));
-      shimmer.addColorStop(0.5, rgba(0.02));
-      shimmer.addColorStop(1, rgba(0));
-      ctx!.fillStyle = shimmer;
-      ctx!.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
-      ctx!.restore();
-
-      // Dish halo with breathing
-      const breathe = 1 + Math.sin(time * 0.008) * 0.04;
-      const dg = ctx!.createRadialGradient(
-        centerX, centerY, radius * 0.3,
-        centerX, centerY, radius * 1.2 * breathe
-      );
-      dg.addColorStop(0, rgba(0.1));
-      dg.addColorStop(0.6, rgba(0.03));
-      dg.addColorStop(1, rgba(0));
+      // Dish halo
+      const dg = ctx!.createRadialGradient(centerX, centerY, radius * 0.3, centerX, centerY, radius * 1.15);
+      dg.addColorStop(0, "rgba(111,168,255,0.08)");
+      dg.addColorStop(0.6, "rgba(111,168,255,0.03)");
+      dg.addColorStop(1, "rgba(111,168,255,0)");
       ctx!.fillStyle = dg;
-      ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius * 1.2 * breathe, 0, Math.PI * 2);
-      ctx!.fill();
+      ctx!.beginPath(); ctx!.arc(centerX, centerY, radius * 1.15, 0, Math.PI * 2); ctx!.fill();
 
       // Rim
-      ctx!.strokeStyle = rgba(0.1);
-      ctx!.lineWidth = 0.8;
-      ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx!.stroke();
-
-      ctx!.strokeStyle = rgba(0.04);
-      ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius * 1.05, 0, Math.PI * 2);
-      ctx!.stroke();
+      ctx!.strokeStyle = "rgba(111,168,255,0.12)"; ctx!.lineWidth = 1;
+      ctx!.beginPath(); ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx!.stroke();
+      ctx!.strokeStyle = "rgba(111,168,255,0.05)";
+      ctx!.beginPath(); ctx!.arc(centerX, centerY, radius * 1.04, 0, Math.PI * 2); ctx!.stroke();
 
       // Meniscus
-      const men = ctx!.createRadialGradient(
-        centerX, centerY - radius * 0.3, 0,
-        centerX, centerY, radius
-      );
-      men.addColorStop(0, rgba(0.04));
-      men.addColorStop(1, rgba(0));
+      const men = ctx!.createRadialGradient(centerX, centerY - radius * 0.3, 0, centerX, centerY, radius);
+      men.addColorStop(0, "rgba(111,168,255,0.025)");
+      men.addColorStop(1, "rgba(111,168,255,0)");
       ctx!.fillStyle = men;
-      ctx!.beginPath();
-      ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx!.fill();
+      ctx!.beginPath(); ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx!.fill();
 
-      // Node drift
+      // Ripples
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i];
+        r.t++;
+        const prog = r.t / r.life;
+        const rad = prog * radius * 0.8;
+        const alpha = (1 - prog) * 0.5;
+        ctx!.strokeStyle = `rgba(160, 200, 255, ${alpha})`;
+        ctx!.lineWidth = 1.2 * (1 - prog * 0.5);
+        ctx!.beginPath();
+        ctx!.arc(r.x, r.y, rad, 0, Math.PI * 2);
+        ctx!.stroke();
+        if (r.t >= r.life) ripples.splice(i, 1);
+      }
+
+      // Hover influence
+      const hoverRadius = radius * 0.25;
       for (const n of nodes) {
-        n.phase += 0.003;
+        n.phase += 0.005;
         n.x = n.baseX + Math.cos(n.phase) * n.driftAmp;
         n.y = n.baseY + Math.sin(n.phase * 0.7) * n.driftAmp;
-        n.pulseIntensity *= 0.97;
+        n.pulseIntensity *= 0.94;
+
+        if (mouseActive) {
+          const dx = n.x - mouseX, dy = n.y - mouseY;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < hoverRadius) {
+            const influence = 1 - d / hoverRadius;
+            n.hoverIntensity = Math.max(n.hoverIntensity, influence * 0.7);
+          }
+        }
+        n.hoverIntensity *= 0.92;
       }
 
-      // Curved connections
+      // Cursor fires nearest neuron
+      if (mouseActive && time - lastMouseFire > 12) {
+        let closest = -1, closestD = Infinity;
+        for (let i = 0; i < nodes.length; i++) {
+          const dx = nodes[i].x - mouseX, dy = nodes[i].y - mouseY;
+          const d = dx * dx + dy * dy;
+          if (d < closestD && d < hoverRadius * hoverRadius) {
+            closestD = d; closest = i;
+          }
+        }
+        if (closest >= 0) {
+          spawnPulse(closest);
+          lastMouseFire = time;
+        }
+      }
+
+      // Connections
       for (const c of connections) {
-        const a = nodes[c.a];
-        const b = nodes[c.b];
-        ctx!.strokeStyle = rgba(c.strength * 0.4);
-        ctx!.lineWidth = 0.5;
-        ctx!.beginPath();
-        ctx!.moveTo(a.x, a.y);
-        ctx!.quadraticCurveTo(c.cx, c.cy, b.x, b.y);
-        ctx!.stroke();
+        const a = nodes[c.a], b = nodes[c.b];
+        let boost = 0;
+        if (mouseActive) {
+          const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+          const dx = mx - mouseX, dy = my - mouseY;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < hoverRadius * 1.3) boost = (1 - d / (hoverRadius * 1.3)) * 0.4;
+        }
+        ctx!.strokeStyle = `rgba(111,168,255,${c.strength * 0.35 + boost})`;
+        ctx!.lineWidth = 0.6 + boost;
+        ctx!.beginPath(); ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y); ctx!.stroke();
       }
 
-      // Pulses along curves with fading trail
+      // Pulses
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         p.t += p.speed;
-        const c = p.connRef;
-        const na = nodes[c.a];
-        const nb = nodes[c.b];
-        const ax = p.forward ? na.x : nb.x;
-        const ay = p.forward ? na.y : nb.y;
-        const bx = p.forward ? nb.x : na.x;
-        const by = p.forward ? nb.y : na.y;
+        const a = nodes[p.from], b = nodes[p.to];
+        const segLen = 0.35;
+        const tailT = Math.max(0, p.t - segLen);
+        const headT = Math.min(1, p.t);
+        const x1 = a.x + (b.x - a.x) * tailT, y1 = a.y + (b.y - a.y) * tailT;
+        const x2 = a.x + (b.x - a.x) * headT, y2 = a.y + (b.y - a.y) * headT;
+        const g = ctx!.createLinearGradient(x1, y1, x2, y2);
+        g.addColorStop(0, "rgba(111,168,255,0)");
+        g.addColorStop(1, "rgba(180,215,255,0.95)");
+        ctx!.strokeStyle = g; ctx!.lineWidth = 1.5;
+        ctx!.beginPath(); ctx!.moveTo(x1, y1); ctx!.lineTo(x2, y2); ctx!.stroke();
 
-        // Fading trail segments
-        const tailStart = Math.max(0, p.t - 0.4);
-        const steps = 16;
-        for (let s = 0; s < steps; s++) {
-          const t1 = tailStart + (p.t - tailStart) * (s / steps);
-          const t2 = tailStart + (p.t - tailStart) * ((s + 1) / steps);
-          const alpha = (s / steps) * 0.7;
-          const pt1 = bezPt(ax, ay, c.cx, c.cy, bx, by, t1);
-          const pt2 = bezPt(ax, ay, c.cx, c.cy, bx, by, t2);
-          ctx!.strokeStyle = brightRgba(alpha);
-          ctx!.lineWidth = 1.2;
-          ctx!.beginPath();
-          ctx!.moveTo(pt1.x, pt1.y);
-          ctx!.lineTo(pt2.x, pt2.y);
-          ctx!.stroke();
-        }
-
-        // Pulse head
-        const head = bezPt(ax, ay, c.cx, c.cy, bx, by, Math.min(1, p.t));
-        const gg = ctx!.createRadialGradient(head.x, head.y, 0, head.x, head.y, 14);
-        gg.addColorStop(0, brightRgba(0.9));
-        gg.addColorStop(0.4, rgba(0.4));
-        gg.addColorStop(1, rgba(0));
+        const hx = a.x + (b.x - a.x) * p.t, hy = a.y + (b.y - a.y) * p.t;
+        const gg = ctx!.createRadialGradient(hx, hy, 0, hx, hy, 11);
+        gg.addColorStop(0, "rgba(220,235,255,0.95)");
+        gg.addColorStop(0.4, "rgba(140,185,255,0.4)");
+        gg.addColorStop(1, "rgba(111,168,255,0)");
         ctx!.fillStyle = gg;
-        ctx!.beginPath();
-        ctx!.arc(head.x, head.y, 14, 0, Math.PI * 2);
-        ctx!.fill();
+        ctx!.beginPath(); ctx!.arc(hx, hy, 11, 0, Math.PI * 2); ctx!.fill();
 
-        ctx!.fillStyle = brightRgba(1);
-        ctx!.beginPath();
-        ctx!.arc(head.x, head.y, 1.6, 0, Math.PI * 2);
-        ctx!.fill();
+        ctx!.fillStyle = "rgba(230,240,255,1)";
+        ctx!.beginPath(); ctx!.arc(hx, hy, 1.9, 0, Math.PI * 2); ctx!.fill();
 
         if (p.t >= 1) {
-          const target = p.forward ? c.b : c.a;
-          nodes[target].pulseIntensity = 1;
-          if (Math.random() < 0.5) {
-            spawnPulse(target, p.depth + 1);
-          }
+          nodes[p.to].pulseIntensity = 1;
+          if (Math.random() < 0.65) spawnPulse(p.to, p.depth + 1);
           pulses.splice(i, 1);
         }
       }
 
-      // Nodes — ambient glow + breathing
+      // Nodes
       for (const n of nodes) {
-        const it = n.pulseIntensity;
-        const nodeBreath = 1 + Math.sin(time * 0.01 + n.phase) * 0.1;
-        const br = n.radius * nodeBreath;
-
-        // Always-on ambient glow
-        const ambientG = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, br + 6);
-        ambientG.addColorStop(0, rgba(0.3));
-        ambientG.addColorStop(1, rgba(0));
-        ctx!.fillStyle = ambientG;
-        ctx!.beginPath();
-        ctx!.arc(n.x, n.y, br + 6, 0, Math.PI * 2);
-        ctx!.fill();
-
-        // Fired glow
+        const it = Math.max(n.pulseIntensity, n.hoverIntensity * 0.8);
+        const br = n.radius;
         if (it > 0.05) {
-          const gr = br + 22 * it;
+          const gr = br + 15 * it;
           const g = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, gr);
-          g.addColorStop(0, brightRgba(0.5 * it));
-          g.addColorStop(0.5, rgba(0.25 * it));
-          g.addColorStop(1, rgba(0));
+          g.addColorStop(0, `rgba(190,215,255,${0.5 * it})`);
+          g.addColorStop(0.5, `rgba(111,168,255,${0.25 * it})`);
+          g.addColorStop(1, "rgba(111,168,255,0)");
           ctx!.fillStyle = g;
-          ctx!.beginPath();
-          ctx!.arc(n.x, n.y, gr, 0, Math.PI * 2);
-          ctx!.fill();
+          ctx!.beginPath(); ctx!.arc(n.x, n.y, gr, 0, Math.PI * 2); ctx!.fill();
         }
-
-        // Core node
-        ctx!.fillStyle = it > 0.1 ? brightRgba(1) : softRgba(0.85);
-        ctx!.beginPath();
-        ctx!.arc(n.x, n.y, br + it * 1.5, 0, Math.PI * 2);
-        ctx!.fill();
+        ctx!.fillStyle = it > 0.15 ? "rgba(220,235,255,1)" : "rgba(111,168,255,0.75)";
+        ctx!.beginPath(); ctx!.arc(n.x, n.y, br + it * 1.2, 0, Math.PI * 2); ctx!.fill();
+        ctx!.strokeStyle = `rgba(111,168,255,${0.15 + it * 0.5})`;
+        ctx!.lineWidth = 0.8;
+        ctx!.beginPath(); ctx!.arc(n.x, n.y, br + 2.5, 0, Math.PI * 2); ctx!.stroke();
       }
 
-      // Slow, deliberate firing
-      if (time - lastBurst > nextBurstIn) {
+      // Cursor glow
+      if (mouseActive) {
+        const cg = ctx!.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 40);
+        cg.addColorStop(0, "rgba(160, 200, 255, 0.08)");
+        cg.addColorStop(1, "rgba(160, 200, 255, 0)");
+        ctx!.fillStyle = cg;
+        ctx!.beginPath(); ctx!.arc(mouseX, mouseY, 40, 0, Math.PI * 2); ctx!.fill();
+      }
+
+      // Ambient bursts
+      if (time - lastBurst > 120 + Math.random() * 180) {
         lastBurst = time;
-        nextBurstIn =
-          burstIntervalFrames[0] +
-          Math.random() * (burstIntervalFrames[1] - burstIntervalFrames[0]);
         if (nodes.length > 0) {
           spawnPulse(Math.floor(Math.random() * nodes.length), 0);
         }
@@ -398,6 +307,22 @@ export default function NeuralDish({
 
       rafRef.current = requestAnimationFrame(draw);
     }
+
+    // Mouse tracking
+    const card = canvas.parentElement!;
+    const onMouseMove = (e: MouseEvent) => {
+      const r = card.getBoundingClientRect();
+      mouseX = e.clientX - r.left;
+      mouseY = e.clientY - r.top;
+      mouseActive = true;
+    };
+    const onMouseLeave = () => {
+      mouseActive = false;
+      mouseX = -9999;
+      mouseY = -9999;
+    };
+    card.addEventListener("mousemove", onMouseMove);
+    card.addEventListener("mouseleave", onMouseLeave);
 
     const ro = new ResizeObserver(() => resize());
     ro.observe(canvas.parentElement!);
@@ -407,7 +332,7 @@ export default function NeuralDish({
       if (nodes.length > 0) {
         spawnPulse(Math.floor(Math.random() * nodes.length));
       }
-    }, 800);
+    }, 500);
 
     rafRef.current = requestAnimationFrame(draw);
 
@@ -415,8 +340,10 @@ export default function NeuralDish({
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       window.clearTimeout(kickoff);
       ro.disconnect();
+      card.removeEventListener("mousemove", onMouseMove);
+      card.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [accent, nodeCount, burstIntervalFrames]);
+  }, []);
 
   return (
     <canvas
