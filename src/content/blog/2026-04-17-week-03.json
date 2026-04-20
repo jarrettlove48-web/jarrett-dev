@@ -1,0 +1,83 @@
+{
+  "slug": "2026-04-17-week-03",
+  "issue": 3,
+  "published": true,
+  "title": "Bitcoin ripped to $78K on a ceasefire.\nA robot just learned tasks nobody taught it.\nAnd Canva is now inside Claude.",
+  "date": "2026-04-17",
+  "summary": "Six stories this week — geopolitics moving crypto, flying taxis hitting a milestone, Anthropic and Canva merging design into AI, a robot brain that generalizes, the FAA handing air traffic to Palantir, and a Dutch startup coming for Nvidia.",
+  "intro": "This week had range. Iran reopened the Strait of Hormuz and Bitcoin jumped 5% in a day. A UK eVTOL company pulled off the first two-way transition flight under regulatory oversight. Anthropic and Canva launched Claude Design — turning a chatbot into a full design suite. Physical Intelligence unveiled a robot brain that can figure out tasks it was never trained on. The FAA tapped Palantir, Thales, and Air Space Intelligence to rebuild air traffic control with AI. And a Dutch chip startup backed by ASML's former CEO says its chips are 100x more efficient than Nvidia's. Six stories, my take on each.",
+  "stories": [
+    {
+      "tag": "Markets",
+      "title": "Bitcoin hit $78K as the Strait of Hormuz reopened and risk appetite came back",
+      "url": "https://news.bitcoin.com/bitcoin-hits-78348-as-strait-of-hormuz-reopening-ignites-global-relief-rally/",
+      "source": "Bitcoin.com",
+      "body": [
+        "Iran declared the Strait of Hormuz fully open to commercial vessels through the ceasefire window ending April 22. Oil plunged nearly 10%. Bitcoin surged 4.97% to $77,884, briefly touching $78K — a two-month high.",
+        "The global crypto market cap jumped 3.79% in 24 hours to nearly $2.77 trillion. Energy-driven inflation fears evaporated overnight, and institutional demand picked back up.",
+        "This was a macro catalyst, not a crypto-native one. The same event that moved oil moved Bitcoin — which tells you something about what Bitcoin has become in this cycle."
+      ],
+      "take": "Bitcoin doesn't need its own catalyst anymore. A ceasefire in the Middle East, a shipping lane reopening, oil collapsing — and BTC moves like a macro risk asset with a leveraged upside. That's the institutional thesis playing out in real time. The people still calling Bitcoin a speculative toy aren't watching the same charts as the desks actually allocating capital. When geopolitics moves your price more than halvings do, you're not a meme — you're infrastructure."
+    },
+    {
+      "tag": "Transportation",
+      "title": "A UK eVTOL just completed the world's first two-way piloted transition flight",
+      "url": "https://interestingengineering.com/transportation/world-first-evtol-two-way-transition-flight",
+      "source": "Interesting Engineering",
+      "body": [
+        "Vertical Aerospace's Valo aircraft completed a vertical takeoff, transitioned to wing-borne cruise, and landed vertically — all in one continuous piloted flight on April 14. World first.",
+        "The 4-passenger aircraft targets 150 mph cruise speed, 100-mile range, zero operating emissions. Certification target is 2028. Around 1,500 pre-orders from American Airlines, Japan Airlines, Avolon, Bristow, and GOL.",
+        "CEO Stuart Simpson: 'Full piloted transition is the most critical and complex challenge in eVTOL development.' Done under UK Civil Aviation Authority oversight with EASA collaboration — more rigorous than any competitor."
+      ],
+      "take": "Everyone's been talking about flying cars for years. This is the first time one actually flew the full sequence — up, forward, and back down — with a pilot in the seat, under real regulatory oversight. 1,500 pre-orders and a 2028 certification target means this isn't a demo reel. Planned routes include Canary Wharf to Heathrow and JFK to Manhattan. If certification lands on time, urban air mobility stops being a concept and starts being a commute option. The gap between 'flying car startup' and 'airline partner' just closed significantly."
+    },
+    {
+      "tag": "AI",
+      "title": "Anthropic and Canva just merged — and Claude is now a design tool",
+      "url": "https://www.theverge.com/news/706637/canva-anthropic-claude-ai-mcp-support",
+      "source": "The Verge",
+      "body": [
+        "Canva and Anthropic launched Claude Design, powered by Canva's design engine. You can now create on-brand visuals, presentations, and marketing assets from text prompts directly inside Claude.",
+        "This builds on a two-year collaboration. Since the Canva MCP launched in Claude last July, millions have used it. In January they added automatic brand rule application. Now they're adding HTML importing — bring interactive content from Claude into Canva's editor for drag-and-drop refinement.",
+        "Canva called this 'the biggest product launch in our history.' They're repositioning from a design platform with AI tools to an AI platform with design tools."
+      ],
+      "take": "This is a category merger, not a feature add. Canva just became the rendering engine for AI-generated design, and Claude just became the interface for visual creation. The person who used to open Canva, pick a template, and drag elements around now just describes what they want in Claude. That's a workflow collapse — and it's going to hit freelance designers, marketing agencies, and internal creative teams hard. The moat for design tools is no longer the editor. It's the AI that makes the editor optional."
+    },
+    {
+      "tag": "Robotics",
+      "title": "Physical Intelligence built a robot brain that can figure out tasks it was never taught",
+      "url": "https://techcrunch.com/2026/04/16/physical-intelligence-a-hot-robotics-startup-says-its-new-robot-brain-can-figure-out-tasks-it-was-never-taught/",
+      "source": "TechCrunch",
+      "body": [
+        "Physical Intelligence unveiled π0.7 — what they're calling 'an early but meaningful step toward a general-purpose robot brain.'",
+        "The model enables robots to generalize across tasks without being explicitly trained for each one. Cross-task learning and adaptation — the holy grail of robotics AI.",
+        "This is the same startup that's been one of the hottest in the robotics space. The announcement positions them at the frontier of embodied AI."
+      ],
+      "take": "Every robotics company trains robots to do specific things. Physical Intelligence is training robots to figure things out. That's the difference between automation and intelligence. If π0.7 actually generalizes — if a robot trained on kitchen tasks can adapt to warehouse tasks without retraining — that changes the economics of every industry that relies on manual labor. We're early, but this is the architecture that could make humanoid robots actually useful instead of just impressive demos. Watch this company."
+    },
+    {
+      "tag": "Defense",
+      "title": "The FAA just handed air traffic control modernization to Palantir, Thales, and Air Space Intelligence",
+      "url": "https://www.investing.com/news/stock-market-news/faa-taps-palantir-thales-and-air-space-intelligence-for-ai-tool-bloomberg-reports-93CH-4621499",
+      "source": "Bloomberg via Investing.com",
+      "body": [
+        "The FAA selected three companies to develop AI software for modernizing air traffic management: Palantir, Thales, and Air Space Intelligence.",
+        "The tool will identify congestion in scheduled departures and arrivals and alert controllers when aircraft approach unsafe distances. Congress allocated $12.5 billion, but officials estimate $20 billion more is needed.",
+        "Transportation Secretary Sean Duffy: 'We have three companies that are working right now with us on developing software to look at how flights are managed.'"
+      ],
+      "take": "$12.5 billion allocated, $20 billion more needed — to modernize a system that still runs on technology from the 1960s. And they picked Palantir, which tells you this isn't just a software upgrade — it's a data infrastructure rebuild. The FAA is essentially admitting that human controllers alone can't scale to handle modern air traffic density, and AI needs to be in the loop. For Palantir, this is another massive government contract that proves their playbook: start with defense, expand to every piece of critical infrastructure. Air traffic control today. Power grid tomorrow."
+    },
+    {
+      "tag": "Chips",
+      "title": "A Dutch startup backed by ASML's former CEO says its chips are 100x more efficient than Nvidia's",
+      "url": "https://www.cnbc.com/2026/04/17/nvidia-rivals-chip-market-funding-ai-asml-euclyd.html",
+      "source": "CNBC",
+      "body": [
+        "Euclyd, a Dutch chip startup founded by former ASML director Kastrup with ex-CEO Peter Wennink as advisor and investor, is raising at least 100 million euros. They've already closed a sub-10 million euro seed round.",
+        "Their CRAFTWERK architecture targets AI inference — the stage where trained models generate predictions. They claim 100x efficiency gains over Nvidia's Vera Rubin chips by minimizing data movement between memory and compute.",
+        "They're not alone. UK startup Fractile, France's Arago, and UK's Optalysys are all seeking nine-figure rounds. Over $200 million has already flowed into European AI chip startups in 2026 alone."
+      ],
+      "take": "100x efficiency is a big claim. But the pedigree is real — when ASML's former CEO backs your chip company, the semiconductor industry pays attention. The thesis makes sense: Nvidia dominates training, but inference is where the volume lives. Every time someone asks Claude a question, runs a recommendation engine, or processes a transaction with AI — that's inference. If Euclyd can deliver even 10x efficiency on inference workloads, the economics of running AI at scale change dramatically. Europe has a real shot at owning the inference layer while Nvidia owns training. That's not competition — that's market segmentation."
+    }
+  ]
+}
