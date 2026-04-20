@@ -239,7 +239,7 @@ a, button { cursor: none; }
   position: relative;
   z-index: 2;
   pointer-events: none;
-  font-size: clamp(4rem, 14vw, 12rem);
+  font-size: clamp(3.2rem, 11.2vw, 9.6rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -303,6 +303,8 @@ a, button { cursor: none; }
   display: flex;
   flex-direction: column;
   gap: 24px;
+  align-items: center;
+  text-align: center;
 }
 .section h2 {
   font-size: 24px;

@@ -23,7 +23,7 @@ export default function Home() {
         <p className="text-text-secondary">
           Weekly tech updates. No fluff, just what I&apos;m actually paying attention to.
         </p>
-        <Link href="/weekly-drop" className="btn-primary" style={{ alignSelf: "flex-start", marginTop: "8px" }}>
+        <Link href="/weekly-drop" className="btn-primary" style={{ marginTop: "8px" }}>
           Read the latest &rarr;
         </Link>
       </section>
