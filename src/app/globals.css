@@ -224,7 +224,7 @@ a, button { cursor: none; }
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  min-height: 80vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -273,6 +273,12 @@ a, button { cursor: none; }
   box-shadow: 0 0 40px rgba(80, 130, 255, 0.35),
               inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
+}
+
+.btn-lg {
+  padding: 16px 40px;
+  font-size: 16px;
+  border-radius: 16px;
 }
 
 .btn-glass {

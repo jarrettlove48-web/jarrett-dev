@@ -1,13 +1,6 @@
 import Link from "next/link";
 import NeuralDish from "@/components/NeuralDish";
 
-const socials = [
-  { label: "Email", href: "mailto:hello@jarrett.love" },
-  { label: "Twitter / X", href: "https://x.com/jarrettlove" },
-  { label: "Instagram", href: "https://instagram.com/jarrettlove" },
-  { label: "TikTok", href: "https://tiktok.com/@jarrettlovebuilds" },
-];
-
 export default function Home() {
   return (
     <div className="flex flex-col">
@@ -30,20 +23,12 @@ export default function Home() {
 
       {/* Connect */}
       <section className="section">
-        <h2>Connect</h2>
-        <div className="connect-row">
-          {socials.map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="pill"
-            >
-              {label}
-            </a>
-          ))}
-        </div>
+        <a
+          href="mailto:hello@jarrett.love"
+          className="btn-primary btn-lg"
+        >
+          Get in touch &rarr;
+        </a>
       </section>
     </div>
   );
