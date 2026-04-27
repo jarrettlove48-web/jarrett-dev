@@ -1,0 +1,71 @@
+{
+  "slug": "2026-04-27-week-04",
+  "issue": 4,
+  "published": true,
+  "title": "Meta is buying solar power beamed from space.\nMemory chips are booming because AI can't stop eating data.\nAnd an AI just learned to teach itself.",
+  "date": "2026-04-27",
+  "summary": "Five stories this week — Meta signing a deal for space-based solar, memory stocks surging on AI storage demand, OpenAI launching an open-source privacy filter, Kevin Warsh laying out his Fed playbook, and DeepMind's David Silver raising $1.1B for AI that learns without human data.",
+  "intro": "This week felt like a checkpoint. Meta signed a deal to receive solar energy beamed from orbit — at night. Micron and SanDisk popped as memory demand forecasts held strong through 2030. OpenAI shipped an open-source model that strips personal data from enterprise datasets before AI ever sees it. Kevin Warsh sat for his confirmation hearing and laid out a full regime change at the Fed. And David Silver — the mind behind AlphaGo — just raised $1.1 billion to build AI that doesn't need us to learn. Five stories, my take on each.",
+  "stories": [
+    {
+      "tag": "Energy",
+      "title": "Meta just signed a deal to receive solar power beamed from space — at night",
+      "url": "https://techcrunch.com/2026/04/27/meta-inks-deal-for-solar-power-at-night-beamed-from-space/",
+      "source": "TechCrunch",
+      "body": [
+        "Overview Energy signed its first commercial contract — with Meta. The startup uses satellites in orbit to capture solar energy and beam it back to Earth. The key detail: it works at night. No day-night cycle dependency. Continuous clean power from space.",
+        "This is Overview Energy's inaugural deal, so it's still early. But the fact that Meta is the first customer tells you where the demand is. AI data centers are power-hungry and getting hungrier. The big tech companies are racing to lock down energy sources that can actually scale with compute.",
+        "Space-based solar has been theoretical for decades. This is the first time a major tech company put a contract behind it."
+      ],
+      "take": "Cheaper energy means more abundance for everyone. In the age of AI, this matters even more — compute requires energy, and the companies building the largest models need clean sources that can meet that demand without hitting a ceiling. Meta buying power from space sounds like science fiction, but it's really just infrastructure planning. The companies that lock down energy now are the ones that get to keep scaling. Everyone else hits a wall."
+    },
+    {
+      "tag": "Markets",
+      "title": "Micron and SanDisk popped as memory demand forecasts hold strong through 2030",
+      "url": "https://www.cnbc.com/2026/04/27/micron-and-sandisk-pop-as-memory-demand-to-remain-high-through-2030.html",
+      "source": "CNBC",
+      "body": [
+        "Micron and SanDisk stocks surged as analysts confirmed memory demand will stay elevated through at least 2030. AI data centers need massive amounts of storage — training datasets, model checkpoints, inference data. That's driving NAND demand alongside the HBM and DRAM boom.",
+        "The whole memory sector is tight because the big DRAM makers shifted capacity toward HBM, which is more profitable for AI workloads. That shift created shortages that ripple across DRAM and NAND pricing broadly.",
+        "The two biggest memory device providers are riding the wave. When compute scales, storage has to scale with it — and right now, supply can't keep up."
+      ],
+      "take": "This is the picks-and-shovels play for AI. Everyone talks about GPU demand, but the data has to live somewhere. Every model checkpoint, every training run, every inference call generates data that needs fast, reliable storage. The DRAM-to-HBM shift is the real story — it's more profitable, so capacity moves there, and everything else gets squeezed. Micron and SanDisk aren't just benefiting from AI. They're becoming infrastructure for it."
+    },
+    {
+      "tag": "AI",
+      "title": "OpenAI launched an open-source privacy filter that strips personal data from enterprise datasets",
+      "url": "https://venturebeat.com/data/openai-launches-privacy-filter-an-open-source-on-device-data-sanitization-model-that-removes-personal-information-from-enterprise-datasets",
+      "source": "VentureBeat",
+      "body": [
+        "OpenAI released an open-source, on-device model that sanitizes enterprise datasets by removing personal information before the data ever touches an AI system.",
+        "It runs locally — no cloud round-trip needed. The model identifies and strips PII from datasets so companies can use their data for AI without exposing employee or customer information.",
+        "This is OpenAI's first major open-source play focused purely on privacy. By making it on-device and open-source, they're removing two of the biggest objections enterprises have to feeding data into AI systems."
+      ],
+      "take": "Privacy is trying to keep up with innovation, and this is one of the better attempts. The fact that it's on-device matters — companies don't have to send sensitive data anywhere to clean it. The fact that it's open-source matters too — anyone can audit it, fork it, improve it. OpenAI making this move signals that enterprise adoption is hitting a privacy wall, and they'd rather solve it themselves than wait for regulators to do it for them. Smart play."
+    },
+    {
+      "tag": "Policy",
+      "title": "Kevin Warsh laid out a full regime change at the Fed — and the math is worth watching",
+      "url": "https://www.cnbc.com/2026/04/21/kevin-warsh-fed-regime-change-senate-confirmation-hearing.html",
+      "source": "CNBC",
+      "body": [
+        "At his Senate confirmation hearing, Kevin Warsh laid out four priorities: revert to a strict 2% inflation target, switch the preferred inflation gauge from core PCE to trimmed-mean PCE, shrink the balance sheet meaningfully, and end forward guidance and the dot plot entirely. He called it a 'regime change' toward a quieter Fed with 'messier' meetings.",
+        "The trimmed-mean PCE switch is the tell. It currently reads about 2.3% versus core PCE at 2.8%. That's a methodological change that makes the inflation problem look smaller on paper — which gives political cover to cut rates. Warsh has also argued in writing that AI is a major disinflationary force and that productivity gains justify lower rates than would otherwise be warranted.",
+        "But the tension is real. Low job growth plus inflation still elevated is a stagflationary setup. Stocks are at all-time highs, housing is outpacing wages, and asset prices are frothy. Warsh himself warned in 2009-era speeches that prolonged low rates 'distort asset prices, encourage leverage, and weaken incentives for financial institutions.' Applying that same framework today would argue against cuts."
+      ],
+      "take": "I think bitcoin and stocks rise under his leadership if rate cuts come through. But will housing rise too? That's the question nobody wants to answer. The trimmed-mean PCE switch is clever — it's intellectually defensible but also conveniently gives room to cut. The AI productivity argument is his out: a real productivity boom does lower the inflation impulse from any given growth rate. But hawks counter that productivity shocks also raise the neutral rate and risk appetite, which actually argues against cuts. Watch what he does, not what he says. The framework he's building gives him flexibility to go either direction — and that's probably the point."
+    },
+    {
+      "tag": "AI",
+      "title": "DeepMind's David Silver raised $1.1B to build AI that learns without human data",
+      "url": "https://techcrunch.com/2026/04/27/deepminds-david-silver-just-raised-1-1b-to-build-an-ai-that-learns-without-human-data/",
+      "source": "TechCrunch",
+      "body": [
+        "David Silver — the DeepMind researcher behind AlphaGo — left to start Ineffable Intelligence, a British AI lab. They just raised $1.1 billion at a $5.1 billion valuation, led by Sequoia Capital.",
+        "The approach: build AI systems that learn through reinforcement learning without relying on human-generated data. No curated datasets, no human annotations. The model teaches itself.",
+        "This is a significant departure from how most AI is built today. Current models are trained on massive amounts of human-created text, code, and images. Silver is betting that the next breakthrough comes from removing that dependency entirely."
+      ],
+      "take": "This is where it gets philosophical. AI learning without human data means it can improve faster, with less intervention, at lower cost. That's powerful. But humans hold everything when it comes to art, culture, human nature — an energy that can't be faked or synthesized. A model that teaches itself might get smarter, but does it get wiser? The $1.1 billion bet is that raw intelligence is enough. I'm not sure it is. But I'm also not sure it isn't. The AlphaGo guy earned the right to find out."
+    }
+  ]
+}
